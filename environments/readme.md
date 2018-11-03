@@ -1,4 +1,4 @@
-# H1
+# Environments
 
 Code that builds/simulates different physical systems go here.
 

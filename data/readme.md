@@ -1,4 +1,4 @@
-# H1
+# Data
 
 All data files (mainly `.mat` files) go here.
 

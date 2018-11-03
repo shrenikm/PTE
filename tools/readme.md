@@ -1,4 +1,4 @@
-# H1
+# Tools
 
 Tools for plotting, basic math, etc. Store the files in appropriately categorized folders.
 
