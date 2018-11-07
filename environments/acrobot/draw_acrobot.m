@@ -15,8 +15,11 @@ function [] = draw_acrobot(ax, x)
     x_max = x_limits(2);
     y_min = y_limits(1);
     y_max = y_limits(2);
-    width = x_max - x_min;
-    height = y_max - y_min;
+
+    %% Assigning the box center to be in the center of the plot for c/w and anti-c/w rotations
+
+    x_start = 0.5*(x_max - x_min);
+    y_start = 0.5*(y_max - y_min);
     
     % Unrolling state
     q = x(1:2);
@@ -30,9 +33,6 @@ function [] = draw_acrobot(ax, x)
     rect_color = config_color.chrome;
     rect_thickness = 1.0;
     
-%     Randomly assigned because it makes plotting more legible
-    x_start = 2;
-    y_start = 8;
     
 %     Pole-1 parameters including color, thickness, radius, length, and angle of
 %     pole
@@ -51,10 +51,7 @@ function [] = draw_acrobot(ax, x)
     mass_two_color = config_color.brown;
     length_two = config_acrobot.length(2);
     theta_two = q(2);
-
     
-    
-%%     Make 8 and 2 dynamic. Starting point for the vertical wall
     % Pole-1 location
     pole_one_tip_x = x_start + length_one*sin(theta_one);
     pole_one_tip_y = y_start - length_one*cos(theta_one); 
