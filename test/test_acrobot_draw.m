@@ -11,4 +11,4 @@ addpath(genpath('../environments/'));
 set(gcf, 'Position', [400, 100, 1200, 800]);
 daspect(ax, [1, 1, 1]);
 
-draw_acrobot(ax, [pi/6, pi/3, 0, 0]);
+draw_acrobot(ax, [pi/6; pi/3; 0; 0]);

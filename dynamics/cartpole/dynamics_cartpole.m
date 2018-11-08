@@ -1,6 +1,6 @@
 % Function for the dynamics of the cartpole model
 
-function [xddot] = dynamics(x, u)
+function [xddot] = dynamics_cartpole(t, x, u)
 
     % Adding paths and loading files  -------------------------------------
     addpath(genpath('../config/'));
@@ -10,9 +10,9 @@ function [xddot] = dynamics(x, u)
     % Unrolling constants -------------------------------------------------
     q = x(1:2);
     qdot = x(3:4);
-    mc = config_cart.mass_cart;
-    mp = config_cart.mass_pole;
-    l = config_cart.length;
+    mc = config_cartpole.mass_cart;
+    mp = config_cartpole.mass_pole;
+    l = config_cartpole.length;
     g = config_common.g;
     
     H = [mc + mp, mp*l*cos(x(2)); mp*l*cos(x(2)) mp*l*l];
@@ -23,5 +23,7 @@ function [xddot] = dynamics(x, u)
     qddot = H\(B*u - G - C*qdot);
     xddot = [qdot; qddot];
     
+end
     
+   
     

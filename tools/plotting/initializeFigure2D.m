@@ -14,55 +14,57 @@
 
 function [fig, ax] = initializeFigure2D(varargin)
 
-%Default figure.
-if nargin == 0
-    fig = figure;
-    ax = axes(fig);
-end
-
-%Optional title.
-if nargin == 1
-    fig = figure('Name',varargin{1},'NumberTitle','off');
-    ax = axes(fig);
-end
-
-%Optional grid on/ grid off.
-if nargin == 2
-    fig = figure('Name',varargin{1},'NumberTitle','off');
-    ax = axes(fig);
-    if strcmp(varargin{2}, 'GridOn')
-        grid on;
-    elseif strcmp(varargin{2}, 'GridOff')
-        grid off;
+    %Default figure.
+    if nargin == 0
+        fig = figure;
+        ax = axes(fig);
     end
-end
 
-%Optional x limits.
-if nargin == 3
-    fig = figure('Name',varargin{1},'NumberTitle','off');
-    ax = axes(fig);
-    if strcmp(varargin{2}, 'GridOn')
-        grid on;
-    elseif strcmp(varargin{2}, 'GridOff')
-        grid off;
+    %Optional title.
+    if nargin == 1
+        fig = figure('Name',varargin{1},'NumberTitle','off');
+        ax = axes(fig);
     end
-    xlim(ax, varargin{3});
-end
 
-%Optional y limits.
-if nargin == 4
-    fig = figure('Name',varargin{1},'NumberTitle','off');
-    ax = axes(fig);
-    if strcmp(varargin{2}, 'GridOn')
-        grid on;
-    elseif strcmp(varargin{2}, 'GridOff')
-        grid off;
+    %Optional grid on/ grid off.
+    if nargin == 2
+        fig = figure('Name',varargin{1},'NumberTitle','off');
+        ax = axes(fig);
+        if strcmp(varargin{2}, 'GridOn')
+            grid on;
+        elseif strcmp(varargin{2}, 'GridOff')
+            grid off;
+        end
     end
-    xlim(ax, varargin{3});
-    ylim(ax, varargin{4});
-end
 
-%Setting axes labels.
-xlabel('x');
-ylabel('y');
+    %Optional x limits.
+    if nargin == 3
+        fig = figure('Name',varargin{1},'NumberTitle','off');
+        ax = axes(fig);
+        if strcmp(varargin{2}, 'GridOn')
+            grid on;
+        elseif strcmp(varargin{2}, 'GridOff')
+            grid off;
+        end
+        xlim(ax, varargin{3});
+    end
+
+    %Optional y limits.
+    if nargin == 4
+        fig = figure('Name',varargin{1},'NumberTitle','off');
+        ax = axes(fig);
+        if strcmp(varargin{2}, 'GridOn')
+            grid on;
+        elseif strcmp(varargin{2}, 'GridOff')
+            grid off;
+        end
+        xlim(ax, varargin{3});
+        ylim(ax, varargin{4});
+    end
+
+    %Setting axes labels.
+    xlabel('x');
+    ylabel('y');
+    
+end
 
