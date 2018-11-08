@@ -62,6 +62,7 @@ function [] = draw_cartpole(ax, x)
         pole_tip_y - mass_radius, 2*mass_radius, 2*mass_radius], ...
         'EdgeColor', mass_color, 'FaceColor', mass_color, ...
         'Curvature', [1, 1]);
+
     
     
     
