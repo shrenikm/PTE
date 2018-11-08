@@ -57,8 +57,8 @@ function [] = draw_acrobot(ax, x)
     pole_one_tip_y = y_start - length_one*cos(theta_one); 
 
      % Pole-2 location
-    pole_two_tip_x = pole_one_tip_x + length_two*sin(theta_two);
-    pole_two_tip_y = pole_one_tip_y - length_two*cos(theta_two);
+    pole_two_tip_x = pole_one_tip_x + length_two*sin(theta_one + theta_two);
+    pole_two_tip_y = pole_one_tip_y - length_two*cos(theta_one + theta_two);
     
     
     %% Drawing -------------------------------------------------------------

@@ -8,8 +8,7 @@ load('config_common.mat', 'config_common');
 % Unrolling constants
 q = x(1:2);
 qdot = x(3:4);
-g = config_common.g(1);
-% g = 9.81;
+g = config_common.g;
 
 % Pole one mass, length, length of com, moment of inertia
 m1 = config_acrobot.mass(1);
@@ -32,7 +31,7 @@ H = [I1 + I2 + m2*l1*l1 + 2*m2*l1*lc2*cos(theta_2), I2 + m2*l1*lc2*cos(theta_2);
 C = [-2*m2*l1*lc2*sin(theta_2)*qdot(2),-m2*l1*lc2*sin(theta_2)*qdot(2);...
     m2*l1*lc2*sin(theta_2)*qdot(1),    0];
 
-G = [(m1*lc1 + m2*l1)*g*sin(theta_1) + m2*g*l2*sin(theta_1 + theta_1);...
+G = [(m1*lc1 + m2*l1)*g*sin(theta_1) + m2*g*l2*sin(theta_1 + theta_2);...
     m2*g*l2*sin(theta_1 + theta_2)];
 
 B = [1;
