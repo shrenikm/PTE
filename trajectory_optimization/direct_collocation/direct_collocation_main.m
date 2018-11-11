@@ -1,6 +1,6 @@
 % Main function to run that performs direct collocation
 
-function [] = direct_collocation(x0, xf, p, Dt, N, dynamics)
+function [] = direct_collocation(x0, xf, p, N, Dt, dynamics)
 
     % Obtaining parameters ------------------------------------------------
     n = length(x0);

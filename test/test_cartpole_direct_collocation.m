@@ -21,7 +21,7 @@ xf = [5; pi; 0; 0];
 Dt = 0.1;
 N = 20;
 p = 1; %Size of inputs
-direct_collocation_main(x0, xf, p, Dt, N, @dynamics_cartpole);
+direct_collocation_main(x0, xf, p, N, Dt, @dynamics_cartpole);
 
 % % Getting the ode solution and simulating
 % [t, y] = ode_integration(@dynamics_cartpole, [1:0.01:5], [10; 1.5; 0; 0], 0);
