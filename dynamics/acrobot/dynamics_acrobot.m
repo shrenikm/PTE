@@ -1,4 +1,4 @@
-function [xdot] = dynamics_acrobot(t,x, u)
+function [xdot] = dynamics_acrobot(x, u)
 
 % Adding paths and loading files  -------------------------------------
 addpath(genpath('../data/'));
