@@ -1,6 +1,6 @@
 % Function for the dynamics of the cartpole model
 
-function [xddot] = dynamics_cartpole(t, x, u)
+function [xddot] = dynamics_cartpole(x, u)
 
     % Adding paths and loading files  -------------------------------------
     addpath(genpath('../data/'));

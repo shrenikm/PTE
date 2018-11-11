@@ -16,7 +16,7 @@ addpath(genpath('../trajectory_optimization/'));
 % set(gcf, 'Position', [400, 100, 1200, 800]);
 % daspect(ax, [1, 1, 1]);
 
-x0 = [0; 0; 0; 0];
+x0 = [5; 0; 0; 0];
 xf = [5; pi; 0; 0];
 Dt = 0.1;
 N = 20;

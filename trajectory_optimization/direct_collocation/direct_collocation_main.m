@@ -1,6 +1,6 @@
 % Main function to run that performs direct collocation
 
-function [] = direct_collocation(x0, xf, p, N, Dt, dynamics)
+function [] = direct_collocation_main(x0, xf, p, N, Dt, dynamics)
 
     % Obtaining parameters ------------------------------------------------
     n = length(x0);
@@ -18,6 +18,16 @@ function [] = direct_collocation(x0, xf, p, N, Dt, dynamics)
     b(n+1:end) = xf;
     
     % Solving -------------------------------------------------------------
+    fun = @(z) compute_cost(z, n, p, N, Dt);
+    nonlcon = @(z) compute_h(z, p, n, N, Dt, dynamics);
+    z0 = zeros(size(z));
+    
+    % Options -------------------------------------------------------------
+    options = optimoptions('fmincon', 'Display', 'iter');
+    
+    disp('Solving');
+    z_sol = fmincon(fun, z0, [], [], A, b, [], [], nonlcon, options);
+    
       
 
 end
