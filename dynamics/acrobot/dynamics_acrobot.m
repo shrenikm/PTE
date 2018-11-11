@@ -1,7 +1,7 @@
 function [xdot] = dynamics_acrobot(t,x, u)
 
 % Adding paths and loading files  -------------------------------------
-addpath(genpath('../config/'));
+addpath(genpath('../data/'));
 load('config_acrobot.mat', 'config_acrobot');
 load('config_common.mat', 'config_common');
 

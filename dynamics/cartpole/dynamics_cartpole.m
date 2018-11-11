@@ -3,7 +3,7 @@
 function [xddot] = dynamics_cartpole(t, x, u)
 
     % Adding paths and loading files  -------------------------------------
-    addpath(genpath('../config/'));
+    addpath(genpath('../data/'));
     load('config_cartpole.mat', 'config_cartpole');
     load('config_common.mat', 'config_common');
     
