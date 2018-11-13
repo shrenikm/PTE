@@ -1,5 +1,5 @@
 %Function to compute the non linear constraints
-function [c, ceq] = compute_h(z, p, n, N, Dt, dynamics)
+function [c, ceq] = compute_h(z, n, p, N, Dt, dynamics)
     
     ceq = zeros(n*(N-1), 1);
     c = zeros(n*(N-1), 1);

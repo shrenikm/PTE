@@ -19,7 +19,7 @@ function [] = direct_collocation_main(x0, xf, p, N, Dt, dynamics)
     
     % Solving -------------------------------------------------------------
     fun = @(z) compute_cost(z, n, p, N, Dt);
-    nonlcon = @(z) compute_h(z, p, n, N, Dt, dynamics);
+    nonlcon = @(z) compute_h(z, n, p, N, Dt, dynamics);
     z0 = zeros(size(z));
     
     % Options -------------------------------------------------------------
