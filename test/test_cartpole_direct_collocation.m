@@ -19,7 +19,7 @@ addpath(genpath('../trajectory_optimization/'));
 x0 = [5; 0; 0; 0];
 xf = [5; pi; 0; 0];
 Dt = 0.1;
-N = 60;
+N = 10;
 p = 1; %Size of inputs
 direct_collocation_main(x0, xf, p, N, Dt, @dynamics_cartpole);
 
