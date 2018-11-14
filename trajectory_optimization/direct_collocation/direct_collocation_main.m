@@ -19,7 +19,7 @@ function [] = direct_collocation_main(x0, xf, p, N, Dt, dynamics)
     
     % Solving -------------------------------------------------------------
     fun = @(z) compute_cost(z, n, p, N, Dt);
-    nonlcon = @(z) compute_h(z, n, p, N, Dt, dynamics);
+    nonlcon = @(z) compute_nonlcon(z, n, p, N, Dt, dynamics);
     z0 = zeros(size(z));
     
     
@@ -37,7 +37,10 @@ function [] = direct_collocation_main(x0, xf, p, N, Dt, dynamics)
     
     
     % Options -------------------------------------------------------------
-    options = optimoptions('fmincon', 'Display', 'iter');
+    options = optimoptions('fmincon', ...
+        'SpecifyObjectiveGradient', false, ...
+        'SpecifyConstraintGradient', true, ...
+        'Display', 'iter');
     
     disp('Solving');
     z_sol = fmincon(fun, z0, [], [], A, b, [], [], nonlcon, options);
