@@ -9,6 +9,8 @@ addpath(genpath('../tools/'));
 addpath(genpath('../environments/'));
 addpath(genpath('../dynamics/'));
 addpath(genpath('../integration/'));
+addpath(genpath('../params/'));
+
 
 % Get figure and set size and position. Also setting equal aspect ratio
 [fig, ax] = initializeFigure2D('Cartpole', 'GridOn', [0, 20], [0, 10]);

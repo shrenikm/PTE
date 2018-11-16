@@ -2,10 +2,9 @@
 
 function [] = draw_acrobot(ax, x)
 
-    % Adding paths and loading files  -------------------------------------
-    addpath(genpath('../config/'));
-    load('config_acrobot.mat', 'config_acrobot');
-    load('config_color.mat', 'config_color');
+    % Loading acrobot params and loading files  ---------------------------    
+    acrobot_params = initialize_acrobot_params();
+    color_params = initialize_color_params();
     
     % Get required data ---------------------------------------------------
     % Obtain the figure limits
@@ -30,26 +29,26 @@ function [] = draw_acrobot(ax, x)
     % Plot parameters (Visual placement)
     l_rect = 1; 
     b_rect = 0.5;
-    rect_color = config_color.chrome;
+    rect_color = color_params.chrome;
     rect_thickness = 1.0;
     
     
 %     Pole-1 parameters including color, thickness, radius, length, and angle of
 %     pole
-    pole_one_color = config_color.brown;
+    pole_one_color = color_params.brown;
     pole_one_thickness = 2;
     mass_one_radius = 0.2;
-    mass_one_color = config_color.brown;
-    length_one = config_acrobot.length(1);
+    mass_one_color = color_params.brown;
+    length_one = acrobot_params.length(1);
     theta_one = q(1);
     
 %   Pole-2 paramaters including color, thickness, radius, length, and angle of
 %     pole
-    pole_two_color = config_color.brown;
+    pole_two_color = color_params.brown;
     pole_two_thickness = 2;    
     mass_two_radius = 0.2;
-    mass_two_color = config_color.brown;
-    length_two = config_acrobot.length(2);
+    mass_two_color = color_params.brown;
+    length_two = acrobot_params.length(2);
     theta_two = q(2);
     
     % Pole-1 location

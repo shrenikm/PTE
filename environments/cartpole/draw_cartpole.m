@@ -2,10 +2,9 @@
 
 function [] = draw_cartpole(ax, x)
 
-    % Adding paths and loading files  -------------------------------------
-    addpath(genpath('../config/'));
-    load('config_cartpole.mat', 'config_cartpole');
-    load('config_color.mat', 'config_color');
+    % Loading cartpole params and loading files ---------------------------    
+    cartpole_params = initialize_cartpole_params();
+    color_params = initialize_color_params();
     
     % Get required data ---------------------------------------------------
     % Obtain the figure limits
@@ -30,17 +29,17 @@ function [] = draw_cartpole(ax, x)
     ground_thickness = 2;
     cart_width = 1;
     cart_height = 0.7;
-    cart_color = config_color.chrome;
+    cart_color = color_params.chrome;
     cart_thickness = 1.5;
-    pole_color = config_color.brown;
+    pole_color = color_params.brown;
     pole_thickness = 2;
     mass_radius = 0.2;
-    mass_color = config_color.brown;
+    mass_color = color_params.brown;
     
     % Pole location
-    pole_tip_x = q(1) + config_cartpole.length*sin(q(2));
+    pole_tip_x = q(1) + cartpole_params.length*sin(q(2));
     pole_tip_y = ground_height + cart_height/2 - ...
-        config_cartpole.length*cos(q(2));
+        cartpole_params.length*cos(q(2));
     
     % Drawing -------------------------------------------------------------
     % Drawing the cart
