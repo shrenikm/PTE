@@ -30,7 +30,6 @@ function [hi, dhi] = compute_hi_and_grad(x_curr, x_next, u_curr, u_next, Dt, dyn
         dhi(:, i + numel(x_curr)) = dhi_curr/delta;
         dhi(:, i + 2*numel(x_curr) + numel(u_curr)) = dhi_next/delta;
         
-        
     end
     
 end

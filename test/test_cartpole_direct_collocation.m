@@ -10,6 +10,9 @@ addpath(genpath('../environments/'));
 addpath(genpath('../dynamics/'));
 addpath(genpath('../integration/'));
 addpath(genpath('../trajectory_optimization/'));
+addpath(genpath('../data/'));
+load('config_cartpole.mat', 'config_cartpole');
+load('config_common.mat', 'config_common');
 
 % % Get figure and set size and position. Also setting equal aspect ratio
 % [fig, ax] = initializeFigure2D('Cartpole', 'GridOn', [0, 20], [0, 10]);
