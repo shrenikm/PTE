@@ -2,7 +2,7 @@
 function [h, dh] = compute_h_and_grad(z, n, p, N, Dt, dynamics)
     
     h = zeros(n*(N-1), 1);
-    dh = zeros((N-1)*n, N*(n + p));
+    dh = zeros(n*(N-1), N*(n + p));
     
     for i=1:N-1
         
