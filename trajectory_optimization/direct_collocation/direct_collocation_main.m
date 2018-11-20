@@ -37,8 +37,8 @@ function [z_sol] = direct_collocation_main(x0, xf, p, N, Dt, dynamics)
     ub = inf(numel(z), 1);
     
     % Constant lower and upper bounds for u
-    M_lower = -50;
-    M_upper = 50;
+    M_lower = -30;
+    M_upper = 30;
     
     for i=1:N
         

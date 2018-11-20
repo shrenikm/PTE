@@ -37,7 +37,3 @@ disp(z_sol);
 
 simulate_trajectory_position(...
     z_sol, linspace(0, (N-1)*Dt, N), @draw_acrobot, ax);
-
-% % Getting the ode solution and simulating
-% [t, y] = ode_integration(@dynamics_cartpole, [1:0.01:5], [10; 1.5; 0; 0], 0);
-% simulate_ode(t, y, @draw_cartpole, ax);
