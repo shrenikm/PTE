@@ -13,9 +13,9 @@ addpath(genpath('../trajectory_optimization/'));
 addpath(genpath('../params/'));
 
 % % Get figure and set size and position. Also setting equal aspect ratio
-% [fig, ax] = initializeFigure2D('Cartpole', 'GridOn', [0, 20], [0, 10]);
-% set(gcf, 'Position', [400, 100, 1200, 800]);
-% daspect(ax, [1, 1, 1]);
+[fig, ax] = initializeFigure2D('Cartpole', 'GridOn', [0, 20], [0, 10]);
+set(gcf, 'Position', [400, 100, 1200, 800]);
+daspect(ax, [1, 1, 1]);
 
 x0 = [5; 0; 0; 0];
 xf = [5; pi; 0; 0];
@@ -23,10 +23,18 @@ Dt = 0.1;
 
 N = 60;
 
+n = numel(x0);
 p = 1; %Size of inputs
 assert(N-size(x0,1)-p>0);
-direct_collocation_main(x0, xf, p, N, Dt, @dynamics_cartpole);
+z_sol = direct_collocation_main(x0, xf, p, N, Dt, @dynamics_cartpole);
 
-% % Getting the ode solution and simulating
-% [t, y] = ode_integration(@dynamics_cartpole, [1:0.01:5], [10; 1.5; 0; 0], 0);
-% simulate_ode(t, y, @draw_cartpole, ax);
+fprintf('Initial state:\n');
+disp(z_sol(1:n));
+fprintf('Final state:\n');
+disp(z_sol(end-n-p+1:end-p));
+
+z_sol = reshape(z_sol, n+p, []);
+z_sol = z_sol(1:end-1, :);
+
+simulate_trajectory_position(...
+    z_sol, linspace(0, (N-1)*Dt, N), @draw_cartpole, ax);
