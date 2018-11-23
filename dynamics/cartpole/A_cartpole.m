@@ -24,8 +24,8 @@ function [A] = A_cartpole(x_star, u_star)
     a34 = mp*sin(theta)*2*l*thetadot/K;
     a42 = (l*K*(u*sin(theta) - mp*l*thetadot^2*cos(2*theta) - (mc+mp)*g*cos(theta)) + ...
         (u*cos(theta) + mp*l*thetadot^2*cos(theta)*sin(theta) + (mc + mp)*g*sin(theta))* ...
-        (mp*sin(2*theta)))/(l^2*K^2);
-    a44 = (mp*sin(2*theta)*thetadot)/(K);
+        (l*mp*sin(2*theta)))/(l^2*K^2);
+    a44 = (-mp*sin(2*theta)*thetadot)/(K);
     
     A = [0, 0, 1, 0;
          0, 0, 0, 1;

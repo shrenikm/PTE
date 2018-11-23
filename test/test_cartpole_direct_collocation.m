@@ -17,13 +17,16 @@ addpath(genpath('../params/'));
 set(gcf, 'Position', [400, 100, 1200, 800]);
 daspect(ax, [1, 1, 1]);
 
-x0 = [5; 0; 0; 0];
+x0 = [5; 0; 0; 1];
 xf = [5; pi; 0; 0];
 x_star = xf;
 u_star = 0;
 
 N = 60;
-Dt = 0.1;
+T = 6;
+Dt = T/N;
+u_lower = -30;
+u_upper = 30;
 
 n = numel(x0);
 p = 1; %Size of inputs
@@ -32,7 +35,8 @@ assert(N-size(x0,1)-p>0);
 Q = eye(n);
 R = eye(p);
 
-z_sol = direct_collocation_main(x0, xf, p, N, Dt, @dynamics_cartpole);
+z_sol = direct_collocation_main(...
+    x0, xf, p, N, Dt, @dynamics_cartpole, u_lower, u_upper);
 
 fprintf('Initial state from solution:\n');
 disp(z_sol(1:n));

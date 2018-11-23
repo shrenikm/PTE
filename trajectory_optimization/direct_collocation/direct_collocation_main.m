@@ -1,6 +1,7 @@
 % Main function to run that performs direct collocation
 
-function [z_sol] = direct_collocation_main(x0, xf, p, N, Dt, dynamics)
+function [z_sol] = direct_collocation_main(...
+    x0, xf, p, N, Dt, dynamics, u_lower, u_upper)
 
     % Obtaining parameters ------------------------------------------------
     n = length(x0);
@@ -36,14 +37,10 @@ function [z_sol] = direct_collocation_main(x0, xf, p, N, Dt, dynamics)
     lb = -inf(numel(z), 1);
     ub = inf(numel(z), 1);
     
-    % Constant lower and upper bounds for u
-    M_lower = -30;
-    M_upper = 30;
-    
     for i=1:N
         
-        lb((n + p)*(i - 1) + n + 1: (n + p)*(i - 1) + n + p) = M_lower;
-        ub((n + p)*(i - 1) + n + 1: (n + p)*(i - 1) + n + p) = M_upper;
+        lb((n + p)*(i - 1) + n + 1: (n + p)*(i - 1) + n + p) = u_lower;
+        ub((n + p)*(i - 1) + n + 1: (n + p)*(i - 1) + n + p) = u_upper;
         
     end
  
