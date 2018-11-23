@@ -1,6 +1,6 @@
 % Function to extract hi from z
-function [hi] = find_hi(i, z, n, p)
+function [hi] = find_hi(i, z, nx, nu)
 
-    hi = z((n + p)*(i - 1) + 1: (n + p)*(i - 1) + n + p);
+    hi = z((nx + nu)*(i - 1) + 1: (nx + nu)*(i - 1) + nx + nu);
 
 end

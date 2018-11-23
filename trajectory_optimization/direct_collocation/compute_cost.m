@@ -1,17 +1,17 @@
-function [g, dg] = compute_cost(z, n, p, N, Dt)
+function [g, dg] = compute_cost(z, nx, nu, N, Dt)
 
     % Initialize cost
     g = 0;
-    dg = zeros(N*(n + p), 1);
+    dg = zeros(N*(nx + nu), 1);
 
     for i=1:N-1
 
-        u_curr= find_ui(i, z, n, p);
-        u_next = find_ui(i+1, z, n, p);
+        u_curr= find_ui(i, z, nx, nu);
+        u_next = find_ui(i+1, z, nx, nu);
         g = g + 0.5*Dt*(u_curr^2 + u_next^2);
 
-        u_curr_inds = (1:p) + n * i + p * (i - 1);
-        u_next_inds = (1:p) + n * (i+1) + p * i;
+        u_curr_inds = (1:nu) + nx * i + nu * (i - 1);
+        u_next_inds = (1:nu) + nx * (i+1) + nu * i;
 
         %Updating cost gradient
         dg(u_curr_inds) = dg(u_curr_inds) + u_curr*Dt;
