@@ -23,6 +23,7 @@ filename = 'cartpole_data_1.mat';
 x = {};
 u = {};
 
+
 for i=1:M
     
     fprintf('Iteration %d -----------------------------------------\n', i);
@@ -54,4 +55,4 @@ for i=1:M
     
 end
 
-save(strcat(filepath, filename), 'x', 'u');
+save(strcat(filepath, filename), 'x', 'u', 'N', 'T', 'Dt');
