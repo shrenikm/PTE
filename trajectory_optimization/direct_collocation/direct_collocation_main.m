@@ -50,7 +50,7 @@ function [z_sol] = direct_collocation_main(...
         'SpecifyConstraintGradient', true, ...
         'Display', 'iter');
     
-    problem.objective = @(z) compute_cost(z, n, nu, N, Dt);
+    problem.objective = @(z) compute_objective(z, n, nu, N, Dt);
     problem.x0 = z0;
     problem.options = options;
     problem.nonlcon = @(z) compute_nonlcon(z, n, nu, N, Dt, dynamics);
