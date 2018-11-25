@@ -1,5 +1,5 @@
 % Function to compute the g vector using the current time value
-function [g] = compute_sps_g_vector(x0, t,P)
+function [g] = compute_sps_g_vector(x0, t, P)
     
     nx = numel(x0);
     g = zeros(nx*(P+1), 1);
