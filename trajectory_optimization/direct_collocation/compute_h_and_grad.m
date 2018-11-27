@@ -1,21 +1,21 @@
 %Function to compute h and its derivative
-function [h, dh] = compute_h_and_grad(z, n, p, N, Dt, dynamics)
+function [h, dh] = compute_h_and_grad(z, nx, nu, N, Dt, dynamics)
     
-    h = zeros(n*(N-1), 1);
-    dh = zeros(n*(N-1), N*(n + p));
+    h = zeros(nx*(N-1), 1);
+    dh = zeros(nx*(N-1), N*(nx + nu));
     
     for i=1:N-1
         
-        x_curr = find_xi(i, z, n, p);
-        x_next = find_xi(i+1, z, n, p);
-        u_curr = find_ui(i, z, n, p);
-        u_next = find_ui(i+1, z, n, p);
+        x_curr = find_xi(i, z, nx, nu);
+        x_next = find_xi(i+1, z, nx, nu);
+        u_curr = find_ui(i, z, nx, nu);
+        u_next = find_ui(i+1, z, nx, nu);
         
         [hi, dhi] = compute_hi_and_grad(...
             x_curr, x_next, u_curr, u_next, Dt, dynamics);
         
-        h(n*(i-1)+1: n*i) = hi;
-        dh((i-1)*n+1:i*n, (i-1)*(n+p)+1:(i+1)*(n+p)) = dhi;
+        h(nx*(i-1)+1: nx*i) = hi;
+        dh((i-1)*nx+1:i*nx, (i-1)*(nx+nu)+1:(i+1)*(nx+nu)) = dhi;
         
     end
 

@@ -1,6 +1,6 @@
 % Function to extract xi from z
-function [xi] = find_xi(i, z, n, p)
+function [xi] = find_xi(i, z, nx, nu)
 
-    xi = z((n + p)*(i - 1) + 1: (n + p)*(i - 1) + n);
+    xi = z((nx + nu)*(i - 1) + 1: (nx + nu)*(i - 1) + nx);
 
 end

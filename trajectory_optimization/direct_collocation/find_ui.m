@@ -1,6 +1,6 @@
 % Function to extract ui from z
-function [ui] = find_ui(i, z, n, p)
+function [ui] = find_ui(i, z, nx, nu)
 
-    ui = z((n + p)*(i - 1) + n + 1: (n + p)*(i - 1) + n + p);
+    ui = z((nx + nu)*(i - 1) + nx + 1: (nx + nu)*(i - 1) + nx + nu);
 
 end
