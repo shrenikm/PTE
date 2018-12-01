@@ -17,6 +17,7 @@ set(gcf, 'Position', [400, 100, 1200, 800]);
 daspect(ax, [1, 1, 1]);
 
 % Getting the ode solution and simulating
-[t, y] = ode_integration(@dynamics_acrobot, [1:0.01:5], [10; 1.5; 0; 0], 0);
+x0  = [pi/6; 0; 0; 0];
+[t, y] = ode_integration(@dynamics_acrobot, [1:0.01:5], x0 , 0);
 simulate_ode(t, y, @draw_acrobot, ax);
 
