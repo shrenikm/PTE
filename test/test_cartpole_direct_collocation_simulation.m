@@ -47,23 +47,9 @@ z_sol = reshape(z_sol, nx+nu, []);
 x_sol = z_sol(1:end-1, :);
 u_sol = z_sol(end, :);
 
-% simulate_trajectory_position(...
-%     q_sol, linspace(0, (N-1)*Dt, N), @draw_cartpole, ax);
-
-[K, S] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
-    Q, R);
-threshold = 3;
-opts = odeset('MaxStep', 0.1,'RelTol',1e-4,'AbsTol',1e-4);
-
-[t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_cartpole(...
-    t, x, u_sol, Dt, K, S, x_star, u_star, threshold), [0 Dt*(N)*1.5], x0, opts);
-
-% The output of ode45 gives the individual x values in a row.
-% We transpose as our plot assumes it to be placed column wise.
-x_control_sol = x_control_sol.';
-
 simulate_trajectory_position(...
-    x_control_sol, t_control_sol, @draw_cartpole, ax);
+    q_sol, linspace(0, (N-1)*Dt, N), @draw_cartpole, ax);
+
 
 
 
