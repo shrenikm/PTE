@@ -34,8 +34,8 @@ function [xdot] = dynamics_acrobot(x, u)
     G = [(m1*lc1 + m2*l1)*g*sin(theta_1) + m2*g*l2*sin(theta_1 + theta_2);...
         m2*g*l2*sin(theta_1 + theta_2)];
 
-    B = [1;
-        0];
+    B = [0;
+        1];
 
     qddot = H\(B*u - C*qdot - G);
     xdot = [qdot;qddot];

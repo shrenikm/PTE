@@ -32,6 +32,11 @@ assert(N-size(x0,1)-p>0);
 Q = eye(n);
 R = eye(p);
 
+% Q = [30,0,0,0;
+%      0,30,0,0;
+%      0,0,1,0;
+%      0,0,0,1];
+ 
 z_sol = direct_collocation_main(...
 	x0, xf, p, N, Dt, @dynamics_acrobot, u_lower, u_upper);
 
@@ -44,13 +49,12 @@ z_sol = reshape(z_sol, n+p, []);
 z_sol = z_sol(1:end-1, :);
 u_sol = z_sol(end, :);
 
-
-simulate_trajectory_position(...
-   z_sol, linspace(0, (N-1)*Dt, N), @draw_acrobot, ax);
+% simulate_trajectory_position(...
+%    z_sol, linspace(0, (N-1)*Dt, N), @draw_acrobot, ax);
 
 [K, S] = lqr(A_acrobot(x_star, u_star), B_acrobot(x_star, u_star), ...
     Q, R);
-threshold = 0.001;
+threshold = 600;
 opts = odeset('MaxStep', 0.1,'RelTol',1e-4,'AbsTol',1e-4);
 
 [t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_acrobot(...

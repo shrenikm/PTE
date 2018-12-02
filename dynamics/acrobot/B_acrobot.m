@@ -30,7 +30,6 @@ function [B] = B_acrobot(x_star, u_star)
         B = [0;
             0;
             H_inv*b];
-
         
     end
     

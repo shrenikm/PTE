@@ -11,6 +11,7 @@ addpath(genpath('../models/'));
 addpath(genpath('../params/'));
 addpath(genpath('../trajectory_optimization/'));
 addpath(genpath('../tools/'));
+addpath(genpath('../visualization/'));
 
 filepath = '';
 filename = 'cartpole_data_1.mat';
@@ -26,7 +27,7 @@ z0 = rand(nx*nx*N + nx*N, 1);
 % Options -------------------------------------------------------------
 options = optimoptions('fmincon', ...
     'Display', 'iter', ...
-    'MaxFunctionEvaluations', 100000, ...
+    'MaxFunctionEvaluations', 50000, ...
     'StepTolerance', 1e-30, ...
     'OptimalityTolerance', 1e-30);
 
@@ -42,4 +43,36 @@ problem.solver = 'fmincon';
 
 disp('Solving');
 
-z_sol = fmincon(problem);
+% z_sol = fmincon(problem);
+filepath = '';
+% filename_pws = 'cartpole_pws_10000.mat';
+filename_pws = 'cartpole_pws_50000.mat';
+load(strcat(filepath , filename_pws));
+% 
+%% Reconstruct lambda and nu for visualization
+lambda = [];
+nu = [];
+ for i=1:N
+    % Computing nu and lambda
+    lambda_temp = compute_pws_lambda(i, z_sol, nx);
+    nu_temp = compute_pws_nu(i, z_sol, nx);
+    
+    lambda = [lambda ; lambda_temp];
+    nu = [nu; nu_temp];
+ end
+    
+%% Visualization of x based on lambda
+M = size(x,2);
+x_j = zeros(N*4,1);
+
+% for j = 1:M
+count = 1;
+traj_n = 11;
+x0 = x{1,traj_n}(:,1);
+for j = 1:N
+    x_j(count:count+3,:) = lambda(count:count+3, :)*x0 + nu(count:count+3,:);
+    count = count + 4;
+end
+x_j = reshape(x_j,  4, size(x_j,1)/4);
+
+visualize_pws(x_j, x{1,traj_n}, Dt, N);
