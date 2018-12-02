@@ -24,9 +24,11 @@ nu = size(u{1}, 1);
 [tg , ug] = generate_ntcg(x, u);
 
 % Defining the query node
-x_query = x{5}(:, 29);
+x_query = x{1}(:, 35);
 p = 2;
 
 [min_distance, min_distance_ind] = query_state(x_query, x, p);
+[x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
+
 
 
