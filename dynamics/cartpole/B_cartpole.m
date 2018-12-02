@@ -9,22 +9,13 @@ function [B] = B_cartpole(x_star, u_star)
     mp = cartpole_params.mass_pole;
     l = cartpole_params.length;
     g = common_params.g;
+
+    q = x_star(1:2);
+    qdot = x_star(3:4);
+
+    H = [mc + mp, mp*l*cos(q(2)); mp*l*cos(q(2)), mp*l*l];
+    B = [1; 0];
     
-    % Unrolling x_star and u_star
-    q = x_star(1);
-    theta = x_star(2);
-    qdot = x_star(3);
-    thetadot = x_star(4);
-    u = u_star;
-    
-    K = mc + mp*(sin(theta)^2);
-    
-    b31 = 1/K;
-    b41 = -cos(theta)/(l*K);
-    
-    B = [0;
-         0;
-         b31;
-         b41];
+    B = [zeros(2, 1); inv(H)*B];
     
 end
