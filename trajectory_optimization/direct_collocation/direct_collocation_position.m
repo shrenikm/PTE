@@ -1,7 +1,8 @@
-% Direct collocation with initial variable values passed as arguments
+% Direct collocation that takes into account only the position constraints
+% (Not velocity) in the linear constraints
 
-function [z_sol] = direct_collocation_with_initial(...
-    x0, xf, nu, N, Dt, dynamics, u_lower, u_upper, x_init, u_init)
+function [z_sol] = direct_collocation_position(...
+    x0, xf, nu, N, Dt, dynamics, u_lower, u_upper)
 
     % Obtaining parameters ------------------------------------------------
     nx = length(x0);
@@ -11,22 +12,26 @@ function [z_sol] = direct_collocation_with_initial(...
     z = zeros(nx*N + nu*N, 1);
     
     % Linear constraint matrices ------------------------------------------
-    Aeq = zeros(2*nx, length(z));
-    beq = zeros(2*nx, 1);
-    Aeq(1:nx, 1:nx) = eye(nx);
-    Aeq(nx+1:2*nx, end-nx-nu+1:end-nu) = eye(nx);
-    beq(1:nx) = x0;
-    beq(nx+1:end) = xf;
+    Aeq = zeros(nx, length(z));
+    beq = zeros(nx, 1);
+    Aeq(1:nx/2, 1:nx/2) = eye(nx/2);
+    Aeq(nx/2+1:nx, end-nx-nu+1:end-nu-nx/2) = eye(nx/2);
+    beq(1:nx/2) = x0(1:nx/2);
+    beq(nx/2 + 1:end) = xf(1:nx/2);
     
     % Solving -------------------------------------------------------------
 
     z0 = zeros(size(z));
-    
+       
+    % z init value (interpolated)
+    x_0_inds = 1:nx;
+    x_f_inds = x_0_inds + (N - 1) * (nx + nu);
+
+    difference = (xf - x0)/(N-1);
     for i=1:N
         x_i_inds = (1:nx) + (nx + nu) * (i - 1);
-        u_i_inds = (1:nu) + nx*i + nu*(i - 1);
-        z0(x_i_inds) = x_init(:, i);
-        z0(u_i_inds) = u_init(:, i);
+        x = x0 + difference*(i-1); 
+        z0(x_i_inds) = x;
     end
     
 
@@ -61,3 +66,8 @@ function [z_sol] = direct_collocation_with_initial(...
     z_sol = fmincon(problem);
 
     
+
+    
+      
+
+end
