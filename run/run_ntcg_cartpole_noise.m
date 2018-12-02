@@ -1,4 +1,4 @@
-% Script to run the ntcg model on the cartpole
+% Script to run the ntcg model on the cartpole with a small initial noise
 
 clear;
 clc;
@@ -32,7 +32,7 @@ p = 2;
 
 N_traverse = size(x_traverse, 2);
 
-% Adding noise optionally
+% Adding noise
 std = 0.01;
 x_traverse(2:end, 1) = x_traverse(2:end, 1) + std*randn(3, 1);
 
@@ -68,6 +68,4 @@ x_control_sol = x_control_sol.';
 
 simulate_trajectory_position(...
     x_control_sol, t_control_sol, @draw_cartpole, ax);
-
-
 
