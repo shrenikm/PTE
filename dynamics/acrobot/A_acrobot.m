@@ -1,6 +1,6 @@
 % Function to compute the A matrix after dynamics linearization
     function [A] = A_acrobot(x_star, u_star)
-    addpath(genpath('../params/'));
+
     acrobot_params = initialize_acrobot_params();
     common_params = initialize_common_params();
 
@@ -21,25 +21,17 @@
     % Unrolling x_star and u_star
     theta1 = x_star(1);
     theta2 = x_star(2);
-
-    q1_dot = x_star(3);
-    q2_dot = x_star(4);
     
-    u = u_star;
 
+    H = [I1 + I2 + m2*l1*l1 + 2*m2*l1*lc2*cos(theta2), I2+ m2*l1*lc2*cos(theta2);
+         I2+ m2*l1*lc2*cos(theta2), I2];
 
-    deter = (I1*I2 + m2*l1*l1*I2 - m2*m2*l1*l1*lc2*lc2*cos(theta2)*cos(theta2));
-    H_inv = [I2, -I2- m2*l1*lc2*cos(theta2); ...
-            -I2 - m2*l1*lc2*cos(theta2), I1+I2+m2*l1*l1 + 2*m2*l1*lc2*cos(theta2)]/deter;
-    
+    H_inv = inv(H); 
+
     dG_dq  = [-g*(m1*lc1 + m2*l1 + m2*l2), -m2*g*l2; ...
                 -m2*g*l2, -m2*g*l2];
-    
-    C = [-2*m2*l1*lc2*sin(theta2)*q2_dot,-m2*l1*lc2*sin(theta2)*q2_dot; ...
-        m2*l1*lc2*sin(theta2)*q1_dot, 0];
-    
-    
+            
     A = [0,0,1,0; ...
         0,0,0,1; ...
-        -H_inv*dG_dq, -H_inv*C];
+        -H_inv*dG_dq, zeros(2, 2)];
   end
