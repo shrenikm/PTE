@@ -24,16 +24,17 @@ nu = size(u{1}, 1);
 [tg , ug] = generate_ntcg(x, u);
 
 % Defining the query node
-x_query = x{1}(:, 1);
+x_query = x{2}(:, 35);
 p = 2;
 
 [min_distance, min_distance_ind] = query_state(x_query, x, p);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
-x_traverse = x{2};
-u_traverse = u{2};
-
 N_traverse = size(x_traverse, 2);
+
+% Adding noise optionally
+std = 0.01;
+x_traverse(2:end, 1) = x_traverse(2:end, 1) + std*randn(3, 1);
 
 % Simulation 
 
@@ -45,7 +46,7 @@ daspect(ax, [1, 1, 1]);
 % simulate_trajectory_position(...
 %     x_traverse, linspace(0, (N_traverse - 1)*Dt, N_traverse), @draw_cartpole, ax);
 
-xf = [5; pi; 0; 0];
+xf = [10; pi; 0; 0];
 x_star = xf;
 u_star = 0;
 Q = eye(nx);
@@ -54,7 +55,7 @@ R = eye(nu);
 [K, S] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
     Q, R);
 
-threshold = 1;
+threshold = 3;
 opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);
 
 [t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_cartpole(...
