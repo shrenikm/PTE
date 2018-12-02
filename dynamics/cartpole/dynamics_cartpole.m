@@ -14,7 +14,7 @@ function [xddot] = dynamics_cartpole(x, u)
     l = cartpole_params.length;
     g = common_params.g;
     
-    H = [mc + mp, mp*l*cos(q(2)); mp*l*cos(q(2)) mp*l*l];
+    H = [mc + mp, mp*l*cos(q(2)); mp*l*cos(q(2)), mp*l*l];
     C = [0, -mp*l*qdot(2)*sin(q(2)); 0, 0];
     G = [0; mp*g*l*sin(q(2))];
     B = [1; 0];
