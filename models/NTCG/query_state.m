@@ -1,6 +1,6 @@
 % Returning the list of states and inputs for the query state
 
-function [min_distance, min_distance_ind] = query_state(x_query, x_data, p)
+function [min_distance, min_distance_ind, x_start] = query_state(x_query, x_data, p)
 
     % We find the closest point according to the p norm
     M = length(x_data);
@@ -30,5 +30,7 @@ function [min_distance, min_distance_ind] = query_state(x_query, x_data, p)
         end
         
     end
+    
+    x_start = get_state_from_index(x_data, min_distance_ind);
 
 end
