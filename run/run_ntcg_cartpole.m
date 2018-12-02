@@ -20,5 +20,5 @@ load(strcat(filepath, filename));
 nx = size(x{1}, 1);
 nu = size(u{1}, 1);
 
-tg = generate_ntcg(x);
+[tg , ug] = generate_ntcg(x, u);
 
