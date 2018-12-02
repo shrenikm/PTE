@@ -20,5 +20,12 @@ load(strcat(filepath, filename));
 nx = size(x{1}, 1);
 nu = size(u{1}, 1);
 
+% Generating the graph
 [tg , ug] = generate_ntcg(x, u);
+
+% Defining the query node
+x_query = x{2}(:, 5);
+p = 2;
+
+[min_distance, min_distance_ind] = query_state(x_query, x, p);
 
