@@ -29,7 +29,7 @@ nu = size(u{1}, 1);
 x_query = [10; 0.5; 0; 0];
 p = 2;
 
-[min_distance, min_distance_ind, x_start] = query_state(x_query, x, p);
+[min_distance, min_distance_ind, x_start, trajectory_index] = query_state(x_query, x, p);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
 
@@ -43,19 +43,8 @@ N_sol = Nt + N;
 
 xf = [10; pi; 0; 0];
 
-% Interpolation for the initial states between query and start
-x_transition = zeros(nx, Nt);
-u_transition = zeros(nu, Nt);
-
-difference = (x_start - x_query)/(Nt);
-for i=1:Nt
-    x_i_inds = (1:nx) + (nx + nu) * (i - 1);
-    x_transition(:, i) = x_query + difference*(i-1); 
-end
-
-z_transition = direct_collocation_with_initial(...
-    x_query, x_start, nu, Nt, Dt, @dynamics_cartpole, -30, 30,...
-    x_transition, u_transition);
+z_transition = direct_collocation_main(...
+    x_query, x_start, nu, Nt, Dt, @dynamics_cartpole, -30, 30);
 
 
 z_transition = reshape(z_transition, nx+nu, []);
@@ -76,12 +65,12 @@ daspect(ax, [1, 1, 1]);
 % simulate_trajectory_position(...
 %     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_cartpole, ax);
 
-
+x_star = xf;
 u_star = 0;
 Q = eye(nx);
 R = eye(nu);
 
-[K_traverse, S_traverse] = lqr(A_cartpole(xf, u_star), B_cartpole(xf, u_star), ...
+[K_traverse, S_traverse] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
     Q, R);
 
 threshold = 10;

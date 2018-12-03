@@ -27,7 +27,7 @@ nu = size(u{1}, 1);
 x_query = x{2}(:, 35);
 p = 2;
 
-[min_distance, min_distance_ind] = query_state(x_query, x, p);
+[min_distance, min_distance_ind, trajectory_index] = query_state(x_query, x, p);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
 N_traverse = size(x_traverse, 2);
