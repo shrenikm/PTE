@@ -25,8 +25,8 @@ nu = size(u{1}, 1);
 
 % Defining the query node
 % x_query = x{1}(:, 1) + [1; 0.1; 0; 0];
-x_start_query = [5; 5; pi/2; 0; 0; 0];
-x_goal_query = [12; 12; 0; 0; 0; 0;];
+x_start_query = [5; 5; 0; 0; 0; 0];
+x_goal_query = [7; 7; 0; 0; -1; -1;];
 p = 2;
 
 [min_distance_goal, min_distance_goal_ind, x_goal, trajectory_index] = query_state(x_goal_query, x, p);
@@ -69,14 +69,16 @@ u_sol = [u_start_transition, u_traverse, u_goal_transition];
 % Simulation 
 
 % % Get figure and set size and position. Also setting equal aspect ratio
-[fig, ax] = initializeFigure2D('Dubin', 'GridOn', [0, 20], [0, 20]);
-set(gcf, 'Position', [400, 100, 1200, 800]);
-daspect(ax, [1, 1, 1]);
+% [fig, ax] = initializeFigure2D('Dubin', 'GridOn', [0, 20], [0, 20]);
+% set(gcf, 'Position', [400, 100, 1200, 800]);
+% daspect(ax, [1, 1, 1]);
 
-simulate_trajectory_position(...
-    x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_dubin, ax);
+folder = {'dubin_ntcg_transition/'};
+% simulate_trajectory_position(...
+%     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_dubin, ax, folder);
 
-
+z_goal = direct_collocation_position(...
+    x_start_query, x_goal_query, nu, Nt_start, Dt, @dynamics_dubin, -30,30);
 % u_star = 0;
 % Q = eye(nx);
 % R = eye(nu);

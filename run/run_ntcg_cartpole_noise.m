@@ -66,6 +66,7 @@ opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);
 % We transpose as our plot assumes it to be placed column wise.
 x_control_sol = x_control_sol.';
 
+folder = {'ntcg_cartpole_noise/'};
 simulate_trajectory_position(...
-    x_control_sol, t_control_sol, @draw_cartpole, ax);
+    x_control_sol, t_control_sol, @draw_cartpole, ax, folder );
 

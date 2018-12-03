@@ -12,7 +12,7 @@ function [x_traverse, u_traverse] = traverse_subgraph(...
         
         % Finding the node that it points to
         index = find(tg(index, :) == 1);
-        disp(index);
+%         disp(index);
         x_traverse = [x_traverse, get_state_from_index(x_data, index)];
         u_traverse = [u_traverse, ug(index, :).'];
         
