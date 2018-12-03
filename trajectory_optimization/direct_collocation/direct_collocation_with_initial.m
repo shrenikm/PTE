@@ -21,8 +21,7 @@ function [z_sol] = direct_collocation_with_initial(...
     % Solving -------------------------------------------------------------
 
     z0 = zeros(size(z));
-    disp(x_init);
-       
+    
     for i=1:N
         x_i_inds = (1:nx) + (nx + nu) * (i - 1);
         u_i_inds = (1:nu) + nx*i + nu*(i - 1);
