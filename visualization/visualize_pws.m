@@ -4,12 +4,18 @@
 % Dt corresponds to time interval between each knot point
 % N correponds to the number of knot points
 
-function visualize_pws(x_j, x_traj, Dt,N)
-%     addpath(genpath('../models/PWS/'));   
+function visualize_pws(z_j, x_traj, Dt,N)
+
     x = linspace(Dt, Dt*N, N);
-    for i = 1:4
-        subplot(2,2,i);
-        y = x_j(i,:);
+    
+    plots = size(z_j,1);
+    for i = 1:plots
+        
+        if plots == 4
+                subplot(2,2,i);
+        end
+
+        y = z_j(i,:);
         plot(x,y, '*');
         hold on;
         plot(x, x_traj(i,:),'r');
