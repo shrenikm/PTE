@@ -2,6 +2,7 @@
 % Loads in pws solution for state and input and visualizes the pws model
 clear;
 clc;
+close all;
 
 % Adding the required paths
 addpath(genpath('../data/'));
@@ -22,7 +23,7 @@ nx = size(x{1}, 1);
 nu = size(u{1}, 1);
 
 % Specify trajectory to be visualized
-traj_n = 10;
+traj_n = 1;
 
 % %% Load in z_sol_state and reconstruct lambda and nu to get x_j
 filepath = '';
@@ -83,9 +84,13 @@ eta = [];
 % Reshaping u_j
 u_j = u_j';
 
-% Initial and final states
-x0 = [5; 0; 0; 1];
-xf = [5; pi; 0; 0];
+% Initial and final states from data
+x0 = x{1,traj_n}(:,1);
+xf = x{1,traj_n}(:,N);
+
+% Initial and final states assigned randomly
+% x0 = [1; 0; -2; 2];
+% xf = [5; pi; 0; 0];
 
 % Other parameters for direct_collocation
 Dt = T/N;
