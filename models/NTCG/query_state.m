@@ -1,6 +1,7 @@
-% Returning the list of states and inputs for the query state
+% Returning the closest node to the query start node.
 
-function [min_distance, min_distance_ind, x_start] = query_state(x_query, x_data, p)
+function [min_distance, min_distance_ind, x_start, trajectory_index] = query_state(...
+    x_query, x_data, p)
 
     % We find the closest point according to the p norm
     M = length(x_data);
@@ -9,6 +10,7 @@ function [min_distance, min_distance_ind, x_start] = query_state(x_query, x_data
     min_distance = norm((x_query - x_data{1}(:, 1)), p);
     min_distance_ind = 1;
     k = 1;
+    trajectory_index = 1;
     
     for i=1:M
         
@@ -21,8 +23,8 @@ function [min_distance, min_distance_ind, x_start] = query_state(x_query, x_data
 
                min_distance = distance;
                min_distance_ind = k;
+               trajectory_index = i;
                
-
             end
             
             k = k + 1;

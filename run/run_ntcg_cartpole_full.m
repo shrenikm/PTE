@@ -28,7 +28,7 @@ x_query = x{1}(:, 1) + [1; 0.1; 0; 0];
 % x_query = [8; 0.5; 0; 0];
 p = 2;
 
-[min_distance, min_distance_ind, x_start] = query_state(x_query, x, p);
+[min_distance, min_distance_ind, x_start, trajectory_index] = query_state(x_query, x, p);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
 
