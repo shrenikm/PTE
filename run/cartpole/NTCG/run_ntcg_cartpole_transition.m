@@ -62,30 +62,31 @@ u_sol = [u_transition, u_traverse];
 set(gcf, 'Position', [400, 100, 1200, 800]);
 daspect(ax, [1, 1, 1]);
 
-% simulate_trajectory_position(...
-%     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_cartpole, ax);
-
-x_star = xf;
-u_star = 0;
-Q = eye(nx);
-R = eye(nu);
-
-[K_traverse, S_traverse] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
-    Q, R);
-
-threshold = 10;
-opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);
-
-[t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_cartpole(...
-    t, x, u_sol, Dt, K_traverse, S_traverse, x_star, u_star, threshold),...
-    [0 Dt*(N_sol)*1.5], x_query, opts);
-
-% The output of ode45 gives the individual x values in a row.
-% We transpose as our plot assumes it to be placed column wise.
-x_control_sol = x_control_sol.';
-
 simulate_trajectory_position(...
-    x_control_sol, t_control_sol, @draw_cartpole, ax);
+    x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_cartpole, ax);
+
+% x_star = xf;
+% u_star = 0;
+% Q = eye(nx);
+% R = eye(nu);
+% 
+% [K_traverse, S_traverse] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
+%     Q, R);
+% 
+% threshold = 10;
+% opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);
+% 
+% [t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_cartpole(...
+%     t, x, u_sol, Dt, K_traverse, S_traverse, x_star, u_star, threshold),...
+%     [0 Dt*(N_sol)*1.5], x_query, opts);
+% 
+% % The output of ode45 gives the individual x values in a row.
+% % We transpose as our plot assumes it to be placed column wise.
+% x_control_sol = x_control_sol.';
+% 
+% 
+% simulate_trajectory_position(...
+%     x_control_sol, t_control_sol, @draw_cartpole, ax, folder);
 
 
 
