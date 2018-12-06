@@ -101,12 +101,10 @@ nu = 1; %Size of inputs
 % Visualize x_j and u_j vs x and u from the data
 % visualize_pws(x_j, x{1,traj_n}, Dt, N);
 % visualize_pws(u_j, u{1,traj_n}, Dt, N);
-%
 
 u_j = zeros(1,N);
 %% Comparison of speed of direct collocation with and without initial x and u
-z_sol_pws = direct_collocation_with_initial(...
+z_sol_pws = direct_collocation_main(...
     x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, x_j, u_j);
-% % 
 z_sol_without_pws = direct_collocation_main(...
     x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper);
