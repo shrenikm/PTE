@@ -36,8 +36,8 @@ assert(N-size(x0,1)-nu>0);
 Q = eye(nx);
 R = eye(nu);
 
-z_sol = direct_collocation_position(...
-    x0, xf, nu, N, Dt, @dynamics_dubin, u_lower, u_upper);
+z_sol = direct_collocation_main(...
+    x0, xf, nu, N, Dt, @dynamics_dubin, u_lower, u_upper, 1:nx/2, xf(1:nx/2, :));
 
 fprintf('Initial state from solution:\n');
 disp(z_sol(1:nx));

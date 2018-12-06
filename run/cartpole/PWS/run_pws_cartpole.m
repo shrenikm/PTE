@@ -105,6 +105,6 @@ nu = 1; %Size of inputs
 u_j = zeros(1,N);
 %% Comparison of speed of direct collocation with and without initial x and u
 z_sol_pws = direct_collocation_main(...
-    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, x_j, u_j);
+    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, xf, x_j, u_j);
 z_sol_without_pws = direct_collocation_main(...
-    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper);
+    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, xf);

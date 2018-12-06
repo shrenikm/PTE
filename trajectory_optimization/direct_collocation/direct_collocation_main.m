@@ -2,7 +2,7 @@
 % initial estimates of x and u
 
 function [z_sol] = direct_collocation_main(...
-    x0, xf, nu, N, Dt, dynamics, u_lower, u_upper, varargin)
+    x0, xf, nu, N, Dt, dynamics, u_lower, u_upper, ind, states, varargin)
     
     % Indicates if initial estimates of x and u provided. Value is set to 1
     % if they are provided.
@@ -28,6 +28,12 @@ function [z_sol] = direct_collocation_main(...
     Aeq(nx+1:2*nx, end-nx-nu+1:end-nu) = eye(nx);
     beq(1:nx) = x0;
     beq(nx+1:end) = xf;
+    
+    % Reducing Aeq and beq to corresponding indices
+    new_ind = [1:nx, nx + ind];
+    Aeq = Aeq(new_ind, :);
+    beq = beq(new_ind, :);
+    
     
     % Solving -------------------------------------------------------------
 

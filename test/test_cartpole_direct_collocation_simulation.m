@@ -17,7 +17,7 @@ addpath(genpath('../params/'));
 set(gcf, 'Position', [400, 100, 1200, 800]);
 daspect(ax, [1, 1, 1]);
 
-x0 = [0; 0; 0; 0];
+x0 = [5; 0; 0; 0];
 xf = [10; pi; 0; 0];
 x_star = xf;
 u_star = 0;
@@ -36,7 +36,7 @@ Q = eye(nx);
 R = eye(nu);
 
 z_sol = direct_collocation_main(...
-    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper);
+    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, xf);
 
 fprintf('Initial state from solution:\n');
 disp(z_sol(1:nx));
