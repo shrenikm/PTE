@@ -16,7 +16,7 @@ function [] = draw_quadrotor(ax, x)
     
     v = x(7:12);
     
-    l = quadrotor_params.length;
+    l = quadrotor_params.length_frame;
     
     % Rotation matrix
     R = eul2rotm(qo.', 'XYZ');
@@ -45,7 +45,7 @@ function [] = draw_quadrotor(ax, x)
         'LineWidth', 3);
     
     % Drawing the rotors as spheres
-    radius = 0.5;
+    radius = quadrotor_params.radius_motor;
     resolution = 10;
     [x_rotor1, y_rotor1, z_rotor1] = sphere(resolution);
     [x_rotor2, y_rotor2, z_rotor2] = sphere(resolution);
