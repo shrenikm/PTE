@@ -27,18 +27,20 @@ u = {};
 x0 = [5; 5; 0; 0; 0; 0];
 xf = [10; 10; pi/2; 0; 0; 0];
 nx = numel(x0);
-p = 1; %Size of inputs
-assert(N-size(x0,1)-p>0);
+nu = 1; %Size of inputs
+assert(N-size(x0,1)-nu>0);
 
-z_sol = direct_collocation_position(...
-    x0, xf, p, N, Dt, @dynamics_dubin, u_lower, u_upper);
+% z_sol = direct_collocation_position(...
+%     x0, xf, p, N, Dt, @dynamics_dubin, u_lower, u_upper, 1:);
+z_sol = direct_collocation_main(...
+    x0, xf, nu, N, Dt, @dynamics_dubin, u_lower, u_upper, 1:nx/2, xf(1:nx/2,:));
 
 fprintf('Initial state from solution:\n');
 disp(z_sol(1:nx));
 fprintf('Final state from solution:\n');
-disp(z_sol(end-nx-p+1:end-p));
+disp(z_sol(end-nx-nu+1:end-nu));
 
-z_sol = reshape(z_sol, nx+p, []);
+z_sol = reshape(z_sol, nx+nu, []);
 x_sol = z_sol(1:end-1, :);
 u_sol = z_sol(end, :);
 
@@ -53,18 +55,18 @@ for i=2:M+1
     x0 = [lrandom(3, 7); lrandom(3, 7); lrandom(-pi/2, pi/2); 0; 0; 0];
     xf = [lrandom(7, 15); lrandom(7, 15); lrandom(-pi/2, pi/2); 0; 0; 0];
     nx = numel(x0);
-    p = 1; %Size of inputs
-    assert(N-size(x0,1)-p>0);
+    nu = 1; %Size of inputs
+    assert(N-size(x0,1)-nu>0);
 
     z_sol = direct_collocation_main(...
-        x0, xf, p, N, Dt, @dynamics_dubin, u_lower, u_upper);
+        x0, xf, nu, N, Dt, @dynamics_dubin, u_lower, u_upper, 1:nx/2, xf(1:nx/2,:));
 
     fprintf('Initial state from solution:\n');
     disp(z_sol(1:nx));
     fprintf('Final state from solution:\n');
-    disp(z_sol(end-nx-p+1:end-p));
+    disp(z_sol(end-nx-nu+1:end-nu));
 
-    z_sol = reshape(z_sol, nx+p, []);
+    z_sol = reshape(z_sol, nx+nu, []);
     x_sol = z_sol(1:end-1, :);
     u_sol = z_sol(end, :);
     

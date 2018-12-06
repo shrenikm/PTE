@@ -44,7 +44,7 @@ N_sol = Nt + N;
 xf = [10; pi; 0; 0];
 
 z_transition = direct_collocation_main(...
-    x_query, x_start, nu, Nt, Dt, @dynamics_cartpole, -30, 30);
+    x_query, x_start, nu, Nt, Dt, @dynamics_cartpole, -30, 30, 1:nx, xf);
 
 
 z_transition = reshape(z_transition, nx+nu, []);

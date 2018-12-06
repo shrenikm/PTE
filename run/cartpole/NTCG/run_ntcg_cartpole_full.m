@@ -52,10 +52,9 @@ for i=1:Nt - 1
     x_transition(:, i) = x_query + difference*(i-1); 
 end
 
-z_sol = direct_collocation_with_initial(...
+z_sol = direct_collocation_main(...
     x_query, xf, nu, N_sol, Dt, @dynamics_cartpole, -30, 30,...
-    [x_transition, x_traverse], [u_transition, u_traverse]);
-
+    1:nx, xf, [x_transition, x_traverse], [u_transition, u_traverse]);
 
 z_sol = reshape(z_sol, nx+nu, []);
 x_sol = z_sol(1:end-1, :);

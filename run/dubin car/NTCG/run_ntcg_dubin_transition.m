@@ -26,7 +26,7 @@ nu = size(u{1}, 1);
 % Defining the query node
 % x_query = x{1}(:, 1) + [1; 0.1; 0; 0];
 x_start_query = [5; 5; pi/2; 0; 0; 0];
-x_goal_query = [6.5; 5.5; 0; 0; 0; 0];
+x_goal_query = [12; 12; 0; 0; 0; 0;];
 p = 2;
 
 [min_distance_goal, min_distance_goal_ind, x_goal, trajectory_index] = query_state(x_goal_query, x, p);
@@ -42,17 +42,17 @@ Nt_start = 15;
 Nt_goal = 15;
 N = size(x_traverse, 2);
 N_sol = Nt_start + N + Nt_goal;
+
 % T = 8;
 % Dt = T/(Nt + N);
 
 xf = x_goal_query;
 
-z_start_transition = direct_collocation_position(...
-    x_start_query, x_start, nu, Nt_start, Dt, @dynamics_dubin, -30, 30);
+z_star_transition = direct_collocation_main(...
+    x_start_query, x_start, nu, Nt_start, Dt, @dynamics_dubin, -30, 30, 1:nx/2, xf(1:nx/2,:));
 
-z_goal_transition = direct_collocation_position(...
-    x_goal, x_goal_query, nu, Nt_start, Dt, @dynamics_dubin, -30, 30);
-
+z_goal_transition = direct_collocation_main(...
+   x_goal, x_goal_query, nu, Nt_start, Dt, @dynamics_dubin, -30, 30, 1:nx/2, xf(1:nx/2,:));
 
 z_start_transition = reshape(z_start_transition, nx+nu, []);
 z_goal_transition = reshape(z_goal_transition, nx+nu, []);
@@ -75,8 +75,7 @@ daspect(ax, [1, 1, 1]);
 simulate_trajectory_position(...
     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_dubin, ax);
 
-% z_goal = direct_collocation_position(...
-%     x_start_query, x_goal_query, nu, Nt_start, Dt, @dynamics_dubin, -30,30);
+
 % u_star = 0;
 % Q = eye(nx);
 % R = eye(nu);

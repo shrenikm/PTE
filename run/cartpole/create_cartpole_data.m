@@ -33,19 +33,19 @@ for i=1:M
     x_star = xf;
     u_star = 0;
 
-    n = numel(x0);
-    p = 1; %Size of inputs
-    assert(N-size(x0,1)-p>0);
+    nx = numel(x0);
+    nu = 1; %Size of inputs
+    assert(N-size(x0,1)-nu>0);
 
     z_sol = direct_collocation_main(...
-        x0, xf, p, N, Dt, @dynamics_cartpole, u_lower, u_upper);
+        x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, xf);
 
     fprintf('Initial state from solution:\n');
-    disp(z_sol(1:n));
+    disp(z_sol(1:nx));
     fprintf('Final state from solution:\n');
-    disp(z_sol(end-n-p+1:end-p));
+    disp(z_sol(end-nx-nu+1:end-nu));
 
-    z_sol = reshape(z_sol, n+p, []);
+    z_sol = reshape(z_sol, nx+nu, []);
     x_sol = z_sol(1:end-1, :);
     u_sol = z_sol(end, :);
     

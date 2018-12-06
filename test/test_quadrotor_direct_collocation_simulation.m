@@ -40,9 +40,8 @@ assert(N-size(x0,1)-nu>0);
 Q = eye(nx);
 R = eye(nu);
 
- 
 z_sol = direct_collocation_main(...
-	x0, xf, nu, N, Dt, @dynamics_quadrotor, u_lower, u_upper);
+	x0, xf, nu, N, Dt, @dynamics_quadrotor, u_lower, u_upper, 1:nx, xf);
 
 fprintf('Initial state:\n');
 disp(z_sol(1:nx));
