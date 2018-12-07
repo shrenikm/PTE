@@ -4,14 +4,14 @@ clear;
 clc;
 
 % Adding the required paths
-addpath(genpath('../data/'));
-addpath(genpath('../dynamics/'));
-addpath(genpath('../environments/'));
-addpath(genpath('../integration/'));
-addpath(genpath('../models/'));
-addpath(genpath('../params/'));
-addpath(genpath('../trajectory_optimization/'));
-addpath(genpath('../tools/'));
+addpath(genpath('../../../data/'));
+addpath(genpath('../../../dynamics/'));
+addpath(genpath('../../../environments/'));
+addpath(genpath('../../../integration/'));
+addpath(genpath('../../../models/'));
+addpath(genpath('../../../params/'));
+addpath(genpath('../../../trajectory_optimization/'));
+addpath(genpath('../../../tools/'));
 
 filepath = '';
 filename = 'cartpole_data_1.mat';
@@ -28,7 +28,18 @@ x_query = x{1}(:, 1) + [1; 0.1; 0; 0];
 % x_query = [8; 0.5; 0; 0];
 p = 2;
 
-[min_distance, min_distance_ind, x_start, trajectory_index] = query_state(x_query, x, p);
+xf = [10; pi; 0; 0];
+x_star = xf;
+u_star = 0;
+Q = eye(nx);
+R = eye(nu);
+beta = 1;
+
+[K, S] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
+    Q, R);
+
+[min_distance, min_distance_ind, x_start, trajectory_index] = ...
+    query_state(x_query, x, p, S, beta);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
 
@@ -39,8 +50,6 @@ N_sol = Nt + N - 1; % -1 to not include x_start twice -- in transition and trave
 
 % T = 8;
 % Dt = T/(Nt + N);
-
-xf = [10; pi; 0; 0];
 
 % Interpolation for the initial states between query and start
 x_transition = zeros(nx, Nt - 1);
@@ -71,14 +80,6 @@ daspect(ax, [1, 1, 1]);
 % simulate_trajectory_position(...
 %     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_cartpole, ax);
 
-
-x_star = xf;
-u_star = 0;
-Q = eye(nx);
-R = eye(nu);
-
-[K, S] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
-    Q, R);
 
 threshold = 10;
 opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);

@@ -22,8 +22,10 @@ phi_f = deg2rad(0);
 theta_f = deg2rad(0);
 psi_f = deg2rad(0);
 
-x0 = [10; 10; 10; phi_0; theta_0; psi_0; zeros(6, 1)];
-xf = [2; 2; 3; phi_f; theta_f; psi_f; zeros(6, 1)];
+x0 = [10; 10; 10; phi_0; theta_0; psi_0; rand(6, 1)];
+xf = x0;
+xf(4:6) = zeros(3, 1); % Zero angles
+xf(7:12) = zeros(6, 1); % Zero velocities
 x_star = xf;
 u_star = 0;
 
@@ -41,7 +43,7 @@ Q = eye(nx);
 R = eye(nu);
 
 z_sol = direct_collocation_main(...
-	x0, xf, nu, N, Dt, @dynamics_quadrotor, u_lower, u_upper, 1:nx, xf);
+	x0, xf, nu, N, Dt, @dynamics_quadrotor, u_lower, u_upper, 1:12);
 
 fprintf('Initial state:\n');
 disp(z_sol(1:nx));
