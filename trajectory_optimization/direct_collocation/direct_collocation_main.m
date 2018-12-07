@@ -2,7 +2,7 @@
 % initial estimates of x and u
 
 function [z_sol] = direct_collocation_main(...
-    x0, xf, nu, N, Dt, dynamics, u_lower, u_upper, ind, states, varargin)
+    x0, xf, nu, N, Dt, dynamics, u_lower, u_upper, ind, varargin)
     
     % Indicates if initial estimates of x and u provided. Value is set to 1
     % if they are provided.
