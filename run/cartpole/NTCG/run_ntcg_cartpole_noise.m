@@ -4,14 +4,14 @@ clear;
 clc;
 
 % Adding the required paths
-addpath(genpath('../data/'));
-addpath(genpath('../dynamics/'));
-addpath(genpath('../environments/'));
-addpath(genpath('../integration/'));
-addpath(genpath('../models/'));
-addpath(genpath('../params/'));
-addpath(genpath('../trajectory_optimization/'));
-addpath(genpath('../tools/'));
+addpath(genpath('../../../data/'));
+addpath(genpath('../../../dynamics/'));
+addpath(genpath('../../../environments/'));
+addpath(genpath('../../../integration/'));
+addpath(genpath('../../../models/'));
+addpath(genpath('../../../params/'));
+addpath(genpath('../../../trajectory_optimization/'));
+addpath(genpath('../../../tools/'));
 
 filepath = '';
 filename = 'cartpole_data_1.mat';
@@ -27,7 +27,17 @@ nu = size(u{1}, 1);
 x_query = x{2}(:, 35);
 p = 2;
 
-[min_distance, min_distance_ind, trajectory_index] = query_state(x_query, x, p);
+xf = [10; pi; 0; 0];
+x_star = xf;
+u_star = 0;
+Q = eye(nx);
+R = eye(nu);
+[K, S] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
+    Q, R);
+beta = 1;
+
+[min_distance, min_distance_ind, trajectory_index] = ...
+    query_state(x_query, x, p, S, beta);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
 N_traverse = size(x_traverse, 2);
@@ -46,14 +56,6 @@ daspect(ax, [1, 1, 1]);
 % simulate_trajectory_position(...
 %     x_traverse, linspace(0, (N_traverse - 1)*Dt, N_traverse), @draw_cartpole, ax);
 
-xf = [10; pi; 0; 0];
-x_star = xf;
-u_star = 0;
-Q = eye(nx);
-R = eye(nu);
-
-[K, S] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
-    Q, R);
 
 threshold = 3;
 opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);

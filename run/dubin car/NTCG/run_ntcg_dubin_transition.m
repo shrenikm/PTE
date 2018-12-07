@@ -4,14 +4,14 @@ clear;
 clc;
 
 % Adding the required paths
-addpath(genpath('../data/'));
-addpath(genpath('../dynamics/'));
-addpath(genpath('../environments/'));
-addpath(genpath('../integration/'));
-addpath(genpath('../models/'));
-addpath(genpath('../params/'));
-addpath(genpath('../trajectory_optimization/'));
-addpath(genpath('../tools/'));
+addpath(genpath('../../../data/'));
+addpath(genpath('../../../dynamics/'));
+addpath(genpath('../../../environments/'));
+addpath(genpath('../../../integration/'));
+addpath(genpath('../../../models/'));
+addpath(genpath('../../../params/'));
+addpath(genpath('../../../trajectory_optimization/'));
+addpath(genpath('../../../tools/'));
 
 filepath = '';
 filename = 'dubin_data_1.mat';
@@ -29,9 +29,14 @@ x_start_query = [5; 5; pi/2; 0; 0; 0];
 x_goal_query = [12; 12; 0; 0; 0; 0;];
 p = 2;
 
-[min_distance_goal, min_distance_goal_ind, x_goal, trajectory_index] = query_state(x_goal_query, x, p);
-[min_distance_start, min_distance_start_ind, x_start] = query_state_in_trajectory(...
-    x_start_query, x, p, trajectory_index);
+S = 0;
+beta = 1;
+
+[min_distance_goal, min_distance_goal_ind, x_goal, trajectory_index] = ...
+    query_state(x_goal_query, x, p, S, beta);
+[min_distance_start, min_distance_start_ind, x_start] = ...
+    query_state_in_trajectory(...
+    x_start_query, x, p, S, beta, trajectory_index);
 
 [x_traverse, u_traverse] = traverse_subgraph(...
     min_distance_start_ind, min_distance_goal_ind, tg, ug, x);
@@ -48,7 +53,7 @@ N_sol = Nt_start + N + Nt_goal;
 
 xf = x_goal_query;
 
-z_star_transition = direct_collocation_main(...
+z_start_transition = direct_collocation_main(...
     x_start_query, x_start, nu, Nt_start, Dt, @dynamics_dubin, -30, 30, 1:nx/2, xf(1:nx/2,:));
 
 z_goal_transition = direct_collocation_main(...
