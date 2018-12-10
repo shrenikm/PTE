@@ -18,7 +18,7 @@ function [f] = compute_pws_objective_input(z, x, u, nx, nu, N)
             
             u_hat = sigma*x{i}(:, 1) + eta;
             
-            alpha = u_hat - x{i}(:, j);
+            alpha = u_hat - u{i}(:, j);
             
             f = f + alpha.'*alpha;
             
