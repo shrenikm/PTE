@@ -22,7 +22,6 @@ filename = 'quadrotor_data_1.mat';
 x = {};
 u = {};
 
-
 for i=1:M
     
     fprintf('Iteration %d -----------------------------------------\n', i);
@@ -58,8 +57,8 @@ for i=1:M
     disp(z_sol(end-nx-nu+1:end-nu));
 
     z_sol = reshape(z_sol, nx+nu, []);
-    x_sol = z_sol(1:end-1, :);
-    u_sol = z_sol(end, :);
+    x_sol = z_sol(1:end-nu, :);
+    u_sol = z_sol(end-nu + 1:end, :);
     
     x(i) = {x_sol};
     u(i) = {u_sol};
