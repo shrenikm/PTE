@@ -9,7 +9,7 @@ addpath(genpath('../../../environments/'));
 addpath(genpath('../../../integration/'));
 addpath(genpath('../../../models/'));
 addpath(genpath('../../../params/'));
-addpath(genpath('../../../trajectory_optimization/'));
+addpath(genpath('../../ ../trajectory_optimization/'));
 addpath(genpath('../../../tools/'));
 addpath(genpath('../../../visualization/'));
 
@@ -25,7 +25,7 @@ nu = size(u{1}, 1);
 z0 = rand((nu*nx+nu)*N,1);
 
 %% Set variable for maxFunctionEvaluations
-iterations = 50000;
+iterations = 300000;
 
 % Options -------------------------------------------------------------
 options = optimoptions('fmincon', ...

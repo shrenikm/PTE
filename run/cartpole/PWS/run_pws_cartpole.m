@@ -25,9 +25,12 @@ nu = size(u{1}, 1);
 % Specify trajectory to be visualized
 traj_n = 1;
 
+% Initialize number of knot points
+N = size(x{1}, 2);
+
 % %% Load in z_sol_state and reconstruct lambda and nu to get x_j
 filepath = '';
-filename_pws = 'pws_z_state_cartpole_50000.mat';
+filename_pws = 'pws_state_cartpole_50000.mat';
 load(strcat(filepath , filename_pws));
 
 % Reconstruct lambda and nu 
@@ -43,21 +46,24 @@ mu = [];
  end
     
 % Reconstructing x based on lambda and mu
-x_j = zeros(N*4,1);
+x_j = zeros(N*nx,1);
+
 
 count = 1;
 x0 = x{1,traj_n}(:,1);
 for j = 1:N
-    x_j(count:count+3,:) = lambda(count:count+3, :)*x0 + mu(count:count+3,:);
-    count = count + 4;
+    x_j(count:count+ nx-1,:) = lambda(count:count+nx-1, :)*x0 ...
+        + mu(count:count+nx-1,:);
+    count = count + nx;
+
 end
 
 % Reshaping x_j
-x_j = reshape(x_j,  nx, size(x_j,1)/nx);
+x_j = reshape(x_j,  nx, N);
 
 %% Load in z_sol_input and reconstruct sigma and eta to get u_j
 filepath = '';
-filename_pws = 'pws_z_input_cartpole_50000.mat';
+filename_pws = 'pws_input_cartpole_50000.mat';
 load(strcat(filepath , filename_pws));
 
 % Reconstruct sigma and eta 
@@ -73,16 +79,19 @@ eta = [];
  end
 
  % Reconstructing u based on sigma and eta
- u_j = zeros(N,1);
- 
+ u_j = zeros(N*nu, 1);
+
  x0 = x{1,traj_n}(:,1);
  
+count = 1;
  for j = 1:N
-     u_j(j,:) = sigma(j,:)*x0 + eta(j,:);
+     u_j(count:count+nu-1,:) = sigma(count:count+nu-1,:)*x0...
+         + eta(count:count + nu-1,:);
+     count = count + nu;
  end
 
 % Reshaping u_j
-u_j = u_j';
+u_j = reshape(u_j,  nu, N);
 
 % Initial and final states from data
 x0 = x{1,traj_n}(:,1);
@@ -96,15 +105,18 @@ xf = x{1,traj_n}(:,N);
 Dt = T/N;
 u_lower = -30;
 u_upper = 30;
-nu = 1; %Size of inputs
 
 % Visualize x_j and u_j vs x and u from the data
 % visualize_pws(x_j, x{1,traj_n}, Dt, N);
 % visualize_pws(u_j, u{1,traj_n}, Dt, N);
 
-u_j = zeros(1,N);
-%% Comparison of speed of direct collocation with and without initial x and u
-z_sol_pws = direct_collocation_main(...
-    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, xf, x_j, u_j);
+disp('Start of results using direct collocation without pws');
+%% Comparison of speed of direct collocation without initial x and u
 z_sol_without_pws = direct_collocation_main(...
-    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, xf);
+    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx);
+
+disp('--------------------------------------------------');
+disp('Start of results using direct collocation with pws');
+%% Comparison of speed of direct collocation with initial x and u
+z_sol_pws = direct_collocation_main(...
+    x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, x_j, u_j);

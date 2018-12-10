@@ -1,4 +1,4 @@
-% Script to save the pws z state model on the quadrotor
+% Script to save the pws z state model on the acrobot
 clear;
 clc;
 
@@ -14,7 +14,7 @@ addpath(genpath('../../../tools/'));
 addpath(genpath('../../../visualization/'));
 
 filepath = '';
-filename = 'quadrotor_data_1.mat';
+filename = 'acrobot_data_1.mat';
 load(strcat(filepath, filename));
 
 nx = size(x{1}, 1);
@@ -25,7 +25,7 @@ nu = size(u{1}, 1);
 z0 = rand(nx*nx*N + nx*N, 1);
 
 %% Set variable for maxFunctionEvaluations
-iterations = 300000;
+iterations = 100000;
 
 % Options -------------------------------------------------------------
 options = optimoptions('fmincon', ...
@@ -45,8 +45,8 @@ disp('Solving');
 
 z_sol_state  = fmincon(problem);
 filepath = '../../../data/';
-filename_pws = 'pws_state_quadrotor_' + string(iterations) + '.mat';
+filename_pws = 'pws_state_acrobot_' + string(iterations) + '.mat';
 save(strcat(filepath, filename_pws), 'z_sol_state');
 
-% filename_pws = 'quadrotor_pws_50000.mat';
+% filename_pws = 'acrobot_pws_50000.mat';
 % load(strcat(filepath , filename_pws));
