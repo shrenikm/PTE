@@ -3,15 +3,15 @@ clear;
 clc;
 
 % Adding the required paths
-addpath(genpath('../data/'));
-addpath(genpath('../dynamics/'));
-addpath(genpath('../environments/'));
-addpath(genpath('../integration/'));
-addpath(genpath('../models/'));
-addpath(genpath('../params/'));
-addpath(genpath('../trajectory_optimization/'));
-addpath(genpath('../tools/'));
-addpath(genpath('../visualization/'));
+addpath(genpath('../../../data/'));
+addpath(genpath('../../../dynamics/'));
+addpath(genpath('../../../environments/'));
+addpath(genpath('../../../../../integration/'));
+addpath(genpath('../../../models/'));
+addpath(genpath('../../../params/'));
+addpath(genpath('../../../trajectory_optimization/'));
+addpath(genpath('../../../tools/'));
+addpath(genpath('../../../visualization/'));
 
 filepath = '';
 filename = 'cartpole_data_1.mat';
@@ -44,6 +44,6 @@ problem.solver = 'fmincon';
 disp('Solving');
 
 z_sol_input  = fmincon(problem);
-filepath = '../data/';
-filename_pws = 'pws_z_input_cartpole_' + string(iterations) + '.mat';
+filepath = '../../../data/';
+filename_pws = 'pws_input_cartpole_' + string(iterations) + '.mat';
 save(strcat(filepath, filename_pws), 'z_sol_input');
