@@ -34,26 +34,31 @@ x_star = xf;
 u_star = 0;
 Q = eye(nx);
 R = eye(nu);
-beta = 0.5;
 
 [K, S] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
     Q, R);
 
 [min_distance, min_distance_ind, x_start, trajectory_index] = ...
-    query_state(x_query, x, p, S, beta);
+    query_state(x_query, x, p);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
 
 % Solving the optimization problem with the transition
-Nt = 15;
+Nt = 20;
 N = size(x_traverse, 2);
 N_sol = Nt + N;
 
 % T = 8;
 % Dt = T/(Nt + N);
 
+% Regular optimization
+fprintf('Regular optimization\n');
+z_regular = direct_collocation_main(...
+    x_query, xf, nu, N_sol, Dt, @dynamics_cartpole, -30, 30, 1:nx);
+
+fprintf('Optimization with PWS\n');
 z_transition = direct_collocation_main(...
-    x_query, x_start, nu, Nt, Dt, @dynamics_cartpole, -30, 30, 1:nx, xf);
+    x_query, x_start, nu, Nt, Dt, @dynamics_cartpole, -30, 30, 1:nx);
 
 
 z_transition = reshape(z_transition, nx+nu, []);
@@ -74,28 +79,6 @@ daspect(ax, [1, 1, 1]);
 simulate_trajectory_position(...
     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_cartpole, ax);
 
-% x_star = xf;
-% u_star = 0;
-% Q = eye(nx);
-% R = eye(nu);
-% 
-% [K_traverse, S_traverse] = lqr(A_cartpole(x_star, u_star), B_cartpole(x_star, u_star), ...
-%     Q, R);
-% 
-% threshold = 10;
-% opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);
-% 
-% [t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_cartpole(...
-%     t, x, u_sol, Dt, K_traverse, S_traverse, x_star, u_star, threshold),...
-%     [0 Dt*(N_sol)*1.5], x_query, opts);
-% 
-% % The output of ode45 gives the individual x values in a row.
-% % We transpose as our plot assumes it to be placed column wise.
-% x_control_sol = x_control_sol.';
-% 
-% 
-% simulate_trajectory_position(...
-%     x_control_sol, t_control_sol, @draw_cartpole, ax, folder);
 
 
 

@@ -37,7 +37,7 @@ R = eye(nu);
 beta = 1;
 
 [min_distance, min_distance_ind, trajectory_index] = ...
-    query_state(x_query, x, p, S, beta);
+    query_state(x_query, x, p);
 [x_traverse, u_traverse] = traverse_one_way(min_distance_ind, tg, ug, x);
 
 N_traverse = size(x_traverse, 2);
