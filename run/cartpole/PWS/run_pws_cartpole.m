@@ -22,14 +22,30 @@ load(strcat(filepath, filename));
 nx = size(x{1}, 1);
 nu = size(u{1}, 1);
 
+% Specify trajectory to be visualized. Can be varied from 1:20
+traj_n = 1;
+
 % Flag to vary initial and goal positions for system.
 %  If flag is set, random initial and final positions will be assigned,
 %  else they will be extraced from trajectory data.
 random_flag = 0;
 
-
-% Specify trajectory to be visualized. Can be varied from 1:20
-traj_n = 1;
+%% Specify initial and final states based on random_flag
+if random_flag
+    % Randomly select initial and final states     
+    x0 = [lrandom(1,15);...
+          lrandom(-pi/3, pi/3);...  
+          lrandom(-0.05, 0.05);...
+          lrandom(-0.05,0.05)];
+    xf = [lrandom(1,15);...
+          pi;...
+          0;
+          0];
+else
+    % Initial and final states from data
+    x0 = x{1,traj_n}(:,1);
+    xf = x{1,traj_n}(:,N);    
+end
 
 % Initialize number of knot points
 N = size(x{1}, 2);
@@ -56,7 +72,6 @@ x_j = zeros(N*nx,1);
 
 
 count = 1;
-x0 = x{1,traj_n}(:,1);
 for j = 1:N
     x_j(count:count+ nx-1,:) = lambda(count:count+nx-1, :)*x0 ...
         + mu(count:count+nx-1,:);
@@ -86,8 +101,6 @@ eta = [];
 
  % Reconstructing u based on sigma and eta
  u_j = zeros(N*nu, 1);
-
- x0 = x{1,traj_n}(:,1);
  
 count = 1;
  for j = 1:N
@@ -99,21 +112,6 @@ count = 1;
 % Reshaping u_j
 u_j = reshape(u_j,  nu, N);
 
-%% Specify initial and final states based on random_flag
-if random_flag
-    x0 = [lrandom(1,15);...
-          lrandom(-pi/3, pi/3);...  
-          lrandom(-0.05, 0.05);...
-          lrandom(-0.05,0.05)];
-    xf = [lrandom(1,15);...
-          pi;...
-          0;
-          0];
-else
-    % Initial and final states from data
-    x0 = x{1,traj_n}(:,1);
-    xf = x{1,traj_n}(:,N);    
-end
 
 % Other parameters for direct_collocation
 Dt = T/N;
@@ -121,8 +119,8 @@ u_lower = -30;
 u_upper = 30;
 
 % Visualize x_j and u_j vs x and u from the data
-visualize_pws(x_j, x{1,traj_n}, Dt, N, 'x');
-visualize_pws(u_j, u{1,traj_n}, Dt, N, 'u');
+% visualize_pws(x_j, x{1,traj_n}, Dt, N, 'x');
+% visualize_pws(u_j, u{1,traj_n}, Dt, N, 'u');
 
 disp('Start of results using direct collocation without PWS');
 %% Comparison of speed of direct collocation without initial x and u
