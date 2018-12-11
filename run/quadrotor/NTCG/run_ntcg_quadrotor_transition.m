@@ -29,7 +29,7 @@ traj_n = 1;
 % Flag to vary initial and goal positions for system.
 %  If flag is set, random initial and final positions will be assigned,
 %  else they will be extraced from trajectory data.
-random_flag = 1;
+random_flag = 0;
 
 %% Specify initial and final states based on random_flag
 if random_flag
