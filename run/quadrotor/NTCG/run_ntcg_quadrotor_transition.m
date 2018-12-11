@@ -23,21 +23,34 @@ nu = size(u{1}, 1);
 % Generating the graph
 [tg, ug] = generate_ntcg(x, u);
 
-% Defining the query node
-x_start_query = [lrandom(5, 25);...
-     lrandom(5, 25);...
-     lrandom(5, 25);...
-     lrandom(-pi/6, pi/6);...
-     lrandom(-pi/6, pi/6);...
-     lrandom(-pi/6, pi/6);...
-     lrandom(-1,1); ...
-     lrandom(-1,1); ...
-     lrandom(-1,1);...
-     lrandom(-0.05,0.05);...
-     lrandom(-0.05,0.05);...
-     lrandom(-0.05,0.05)];
- 
-x_start_query = x{2}(:, 1);
+% Specify trajectory to be visualized. Can be varied from 1:50.
+traj_n = 1;
+
+% Flag to vary initial and goal positions for system.
+%  If flag is set, random initial and final positions will be assigned,
+%  else they will be extraced from trajectory data.
+random_flag = 1;
+
+%% Specify initial and final states based on random_flag
+if random_flag
+% Initial and final states assigned randomly
+    x_start_query = [lrandom(5, 25);...
+                     lrandom(5, 25);...
+                     lrandom(5, 25);...
+                     lrandom(-pi/6, pi/6);...
+                     lrandom(-pi/6, pi/6);...
+                     lrandom(-pi/6, pi/6);...
+                     lrandom(-1,1); ...
+                     lrandom(-1,1); ...
+                     lrandom(-1,1);...
+                     lrandom(-0.05,0.05);...
+                     lrandom(-0.05,0.05);...
+                     lrandom(-0.05,0.05)];
+
+else
+    x_start_query = x{traj_n}(:, 1);
+
+end
 
 x_goal_query = x_start_query;
 x_goal_query(4:12) = zeros(9,1);
@@ -56,8 +69,8 @@ p = 2;
 
 
 % Solving the optimization problem with the transition
-Nt_start = 10;
-Nt_goal = 10;
+Nt_start = 15;
+Nt_goal = 15;
 N = size(x_traverse, 2);
 
 N_sol = Nt_start + N + Nt_goal;
@@ -69,7 +82,7 @@ xf = x_goal_query;
 
 fprintf('Regular optimization\n');
 z_regular = direct_collocation_main(...
-    x_start_query, x_goal_query, nu, 20, Dt, @dynamics_quadrotor, -30, 30, 1:nx);
+    x_start_query, x_goal_query, nu, 60, Dt, @dynamics_quadrotor, -30, 30, 1:nx);
 
 
 fprintf('NTCG optimization\n');
@@ -93,12 +106,12 @@ u_sol = [u_start_transition, u_traverse, u_goal_transition];
 % Simulation 
 
 % Get figure and set size and position. Also setting equal aspect ratio
-[fig, ax] = initializeFigure3D('Quadrotor', 'GridOn', [0, 30], [0, 30], [0, 30]);
-set(gcf, 'Position', [400, 100, 1200, 800]);
-daspect(ax, [1, 1, 1]);
-
-simulate_trajectory_position(...
-    x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_quadrotor, ax);
+% [fig, ax] = initializeFigure3D('Quadrotor', 'GridOn', [0, 30], [0, 30], [0, 30]);
+% set(gcf, 'Position', [400, 100, 1200, 800]);
+% daspect(ax, [1, 1, 1]);
+% 
+% simulate_trajectory_position(...
+%     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_quadrotor, ax);
 
 
 

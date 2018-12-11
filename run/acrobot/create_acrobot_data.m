@@ -4,31 +4,30 @@ clear;
 clc;
 
 % Adding the required paths
-addpath(genpath('../tools/'));
-addpath(genpath('../data/'));
-addpath(genpath('../environments/'));
-addpath(genpath('../dynamics/'));
-addpath(genpath('../trajectory_optimization/'));
-addpath(genpath('../params/'));
+addpath(genpath('../../tools/'));
+addpath(genpath('../../data/'));
+addpath(genpath('../../environments/'));
+addpath(genpath('../../dynamics/'));
+addpath(genpath('../../trajectory_optimization/'));
+addpath(genpath('../../params/'));
 
 M = 20;
 N = 60;
 T = 6;
 Dt = T/N;
-u_lower = -30;
-u_upper = 30;
+u_lower = -inf;
+u_upper = inf;
 xlim = [0, 20];
-filepath = '../data/';
+filepath = '../../data/';
 filename = 'acrobot_data_1.mat';
 x = {};
 u = {};
-
 
 for i=1:M
     
     fprintf('Iteration %d -----------------------------------------\n', i);
 
-    x0 = [lrandon(-pi/2, pi/2); lrandom(-pi/2, pi/2); 0; 0];
+    x0 = [lrandom(-pi/6, pi/6); lrandom(-pi/6, pi/6); 0; 0];
     xf = [pi; 0; 0; 0];
     x_star = xf;
     u_star = 0;
@@ -38,7 +37,7 @@ for i=1:M
     assert(N-size(x0,1)-nu>0);
 
     z_sol = direct_collocation_main(...
-        x0, xf, nu, N, Dt, @dynamics_acrobot, u_lower, u_upper, 1:nx, xf);
+        x0, xf, nu, N, Dt, @dynamics_acrobot, u_lower, u_upper, 1:nx);
 
     fprintf('Initial state from solution:\n');
     disp(z_sol(1:nx));

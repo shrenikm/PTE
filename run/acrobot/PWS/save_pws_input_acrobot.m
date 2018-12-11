@@ -25,7 +25,7 @@ nu = size(u{1}, 1);
 z0 = rand((nu*nx+nu)*N,1);
 
 %% Set variable for maxFunctionEvaluations
-iterations = 100000;
+iterations = 50000;
 
 % Options -------------------------------------------------------------
 options = optimoptions('fmincon', ...

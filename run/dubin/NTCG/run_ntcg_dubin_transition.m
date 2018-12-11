@@ -23,9 +23,26 @@ nu = size(u{1}, 1);
 % Generating the graph
 [tg, ug] = generate_ntcg(x, u);
 
-% Defining the query node
-x_start_query = [6; 6; pi/2; 0; 0; 0];
-x_goal_query = [10; 10; 0; 0; 0; 0;];
+% Specify trajectory to be visualized. Can be varied from 2:3.
+traj_n = 2;
+
+% Flag to vary initial and goal positions for system.
+%  If flag is set, random initial and final positions will be assigned,
+%  else they will be extraced from trajectory data.
+random_flag = 0;
+
+%% Specify initial and final states based on random_flag
+if random_flag
+% Initial and final states assigned randomly
+        x_start_query = [6;6;pi/2;0;0;0];
+        x_goal_query = [10;10;0;0;0;0];
+else
+    x_start_query = x{traj_n}(:, 1);
+    x_goal_query = x{traj_n}(:, N);
+end
+
+
+
 p = 2;
 
 S = 0;
@@ -41,8 +58,8 @@ S = 0;
 
 
 % Solving the optimization problem with the transition
-Nt_start = 7;
-Nt_goal = 7;
+Nt_start = 10;
+Nt_goal = 10;
 N = size(x_traverse, 2);
 N_sol = Nt_start + N + Nt_goal;
 
@@ -75,7 +92,7 @@ u_sol = [u_start_transition, u_traverse, u_goal_transition];
 
 % Simulation 
 
-% % Get figure and set size and position. Also setting equal aspect ratio
+% Get figure and set size and position. Also setting equal aspect ratio
 [fig, ax] = initializeFigure2D('Dubin', 'GridOn', [0, 20], [0, 20]);
 set(gcf, 'Position', [400, 100, 1200, 800]);
 daspect(ax, [1, 1, 1]);
