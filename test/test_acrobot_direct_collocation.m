@@ -31,11 +31,6 @@ assert(N-size(x0,1)-nu>0);
 
 Q = eye(nx);
 R = eye(nu);
-
-% Q = [30,0,0,0;
-%      0,30,0,0;
-%      0,0,1,0;
-%      0,0,0,1];
  
 z_sol = direct_collocation_main(...
 	x0, xf, nu, N, Dt, @dynamics_acrobot, u_lower, u_upper, 1:nx, xf);
@@ -49,20 +44,5 @@ z_sol = reshape(z_sol, nx+nu, []);
 z_sol = z_sol(1:end-1, :);
 u_sol = z_sol(end, :);
 
-% simulate_trajectory_position(...
-%    z_sol, linspace(0, (N-1)*Dt, N), @draw_acrobot, ax);
-
-[K, S] = lqr(A_acrobot(x_star, u_star), B_acrobot(x_star, u_star), ...
-    Q, R);
-threshold = 600;
-opts = odeset('MaxStep', 0.1,'RelTol',1e-4,'AbsTol',1e-4);
-
-[t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_acrobot(...
-    t, x, u_sol, Dt, K, S, x_star, u_star, threshold), [0 Dt*(N)*1.5], x0, opts);
-
-% The output of ode45 gives the individual x values in a row.
-% We transpose as our plot assumes it to be placed column wise.
-x_control_sol = x_control_sol.';
-
 simulate_trajectory_position(...
-    x_control_sol, t_control_sol, @draw_acrobot, ax);
+   z_sol, linspace(0, (N-1)*Dt, N), @draw_acrobot, ax);

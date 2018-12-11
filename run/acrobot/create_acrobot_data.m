@@ -28,8 +28,8 @@ for i=1:M
     
     fprintf('Iteration %d -----------------------------------------\n', i);
 
-    x0 = [10; lrandom(-pi/2, pi/2); 0; 0];
-    xf = [10; pi; 0; 0];
+    x0 = [lrandon(-pi/2, pi/2); lrandom(-pi/2, pi/2); 0; 0];
+    xf = [pi; 0; 0; 0];
     x_star = xf;
     u_star = 0;
 
