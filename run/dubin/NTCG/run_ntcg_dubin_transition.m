@@ -24,27 +24,25 @@ nu = size(u{1}, 1);
 [tg, ug] = generate_ntcg(x, u);
 
 % Defining the query node
-% x_query = x{1}(:, 1) + [1; 0.1; 0; 0];
-x_start_query = [5; 5; pi/2; 0; 0; 0];
-x_goal_query = [12; 12; 0; 0; 0; 0;];
+x_start_query = [6; 6; pi/2; 0; 0; 0];
+x_goal_query = [10; 10; 0; 0; 0; 0;];
 p = 2;
 
 S = 0;
-beta = 1;
 
 [min_distance_goal, min_distance_goal_ind, x_goal, trajectory_index] = ...
-    query_state(x_goal_query, x, p, S, beta);
+    query_state(x_goal_query, x, p);
 [min_distance_start, min_distance_start_ind, x_start] = ...
     query_state_in_trajectory(...
-    x_start_query, x, p, S, beta, trajectory_index);
+    x_start_query, x, p, trajectory_index);
 
 [x_traverse, u_traverse] = traverse_subgraph(...
     min_distance_start_ind, min_distance_goal_ind, tg, ug, x);
 
 
 % Solving the optimization problem with the transition
-Nt_start = 15;
-Nt_goal = 15;
+Nt_start = 7;
+Nt_goal = 7;
 N = size(x_traverse, 2);
 N_sol = Nt_start + N + Nt_goal;
 
@@ -53,11 +51,16 @@ N_sol = Nt_start + N + Nt_goal;
 
 xf = x_goal_query;
 
+fprintf('Regular optimization\n');
+z_regular = direct_collocation_main(...
+    x_start_query, x_goal_query, nu, N, Dt, @dynamics_dubin, -30, 30, 1:nx/2);
+
+fprintf('NTCG optimization\n');
 z_start_transition = direct_collocation_main(...
-    x_start_query, x_start, nu, Nt_start, Dt, @dynamics_dubin, -30, 30, 1:nx/2, xf(1:nx/2,:));
+    x_start_query, x_start, nu, Nt_start, Dt, @dynamics_dubin, -30, 30, 1:nx/2);
 
 z_goal_transition = direct_collocation_main(...
-   x_goal, x_goal_query, nu, Nt_start, Dt, @dynamics_dubin, -30, 30, 1:nx/2, xf(1:nx/2,:));
+   x_goal, x_goal_query, nu, Nt_start, Dt, @dynamics_dubin, -30, 30, 1:nx/2);
 
 z_start_transition = reshape(z_start_transition, nx+nu, []);
 z_goal_transition = reshape(z_goal_transition, nx+nu, []);
@@ -79,28 +82,6 @@ daspect(ax, [1, 1, 1]);
 
 simulate_trajectory_position(...
     x_sol, linspace(0, (N_sol - 1)*Dt, N_sol), @draw_dubin, ax);
-
-
-% u_star = 0;
-% Q = eye(nx);
-% R = eye(nu);
-% 
-% [K_traverse, S_traverse] = lqr(A_cartpole(xf, u_star), B_cartpole(xf, u_star), ...
-%     Q, R);
-% 
-% threshold = 10;
-% opts = odeset('MaxStep', 0.1, 'RelTol', 1e-4,'AbsTol', 1e-4);
-% 
-% [t_control_sol, x_control_sol] = ode45(@(t,x) control_dynamics_cartpole(...
-%     t, x, u_sol, Dt, K_traverse, S_traverse, x_star, u_star, threshold),...
-%     [0 Dt*(N_sol)*1.5], x_query, opts);
-% 
-% % The output of ode45 gives the individual x values in a row.
-% % We transpose as our plot assumes it to be placed column wise.
-% x_control_sol = x_control_sol.';
-% 
-% simulate_trajectory_position(...
-%     x_control_sol, t_control_sol, @draw_cartpole, ax);
 
 
 
