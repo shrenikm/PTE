@@ -25,7 +25,7 @@ function [min_distance, min_distance_ind, x_start] = query_state_in_trajectory(.
             
                 distance = norm(x_delta, p);
                 
-                if distance < min_distance
+                if distance <= min_distance
 
                    min_distance = distance;
                    min_distance_ind = k;

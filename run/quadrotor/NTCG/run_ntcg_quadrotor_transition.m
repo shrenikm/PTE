@@ -36,6 +36,8 @@ x_start_query = [lrandom(5, 25);...
      lrandom(-0.05,0.05);...
      lrandom(-0.05,0.05);...
      lrandom(-0.05,0.05)];
+ 
+x_start_query = x{2}(:, 1);
 
 x_goal_query = x_start_query;
 x_goal_query(4:12) = zeros(9,1);
@@ -67,7 +69,7 @@ xf = x_goal_query;
 
 fprintf('Regular optimization\n');
 z_regular = direct_collocation_main(...
-    x_start_query, x_goal_query, nu, N, Dt, @dynamics_quadrotor, -30, 30, 1:nx);
+    x_start_query, x_goal_query, nu, 20, Dt, @dynamics_quadrotor, -30, 30, 1:nx);
 
 
 fprintf('NTCG optimization\n');
@@ -80,9 +82,9 @@ z_goal_transition = direct_collocation_main(...
 z_start_transition = reshape(z_start_transition, nx+nu, []);
 z_goal_transition = reshape(z_goal_transition, nx+nu, []);
 x_start_transition = z_start_transition(1:end-nu, :);
-u_start_transition = z_start_transition(end-nu+1, :);
+u_start_transition = z_start_transition(end-nu+1:end, :);
 x_goal_transition = z_goal_transition(1:end-nu, :);
-u_goal_transition = z_goal_transition(end-nu+1, :);
+u_goal_transition = z_goal_transition(end-nu+1:end, :);
 
 x_sol = [x_start_transition, x_traverse, x_goal_transition];
 u_sol = [u_start_transition, u_traverse, u_goal_transition];
