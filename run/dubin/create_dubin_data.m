@@ -4,12 +4,12 @@ clear;
 clc;
 
 % Adding the required paths
-addpath(genpath('../tools/'));
-addpath(genpath('../data/'));
-addpath(genpath('../environments/'));
-addpath(genpath('../dynamics/'));
-addpath(genpath('../trajectory_optimization/'));
-addpath(genpath('../params/'));
+addpath(genpath('../../tools/'));
+addpath(genpath('../../data/'));
+addpath(genpath('../../environments/'));
+addpath(genpath('../../dynamics/'));
+addpath(genpath('../../trajectory_optimization/'));
+addpath(genpath('../../params/'));
 
 M = 2;
 N = 60;
@@ -18,7 +18,7 @@ Dt = T/N;
 u_lower = -30;
 u_upper = 30;
 xlim = [0, 20];
-filepath = '../data/';
+filepath = '../../data/';
 filename = 'dubin_data_1.mat';
 x = {};
 u = {};
