@@ -22,7 +22,13 @@ load(strcat(filepath, filename));
 nx = size(x{1}, 1);
 nu = size(u{1}, 1);
 
-% Specify trajectory to be visualized
+% Flag to vary initial and goal positions for system.
+%  If flag is set, random initial and final positions will be assigned,
+%  else they will be extraced from trajectory data.
+random_flag = 0;
+
+
+% Specify trajectory to be visualized. Can be varied from 1:20
 traj_n = 1;
 
 % Initialize number of knot points
@@ -93,13 +99,21 @@ count = 1;
 % Reshaping u_j
 u_j = reshape(u_j,  nu, N);
 
-% Initial and final states from data
-x0 = x{1,traj_n}(:,1);
-xf = x{1,traj_n}(:,N);
-
-% Initial and final states assigned randomly
-% x0 = [1; 0; -2; 2];
-% xf = [5; pi; 0; 0];
+%% Specify initial and final states based on random_flag
+if random_flag
+    x0 = [lrandom(1,15);...
+          lrandom(-pi/3, pi/3);...  
+          lrandom(-0.05, 0.05);...
+          lrandom(-0.05,0.05)];
+    xf = [lrandom(1,15);...
+          pi;...
+          0;
+          0];
+else
+    % Initial and final states from data
+    x0 = x{1,traj_n}(:,1);
+    xf = x{1,traj_n}(:,N);    
+end
 
 % Other parameters for direct_collocation
 Dt = T/N;
@@ -107,16 +121,16 @@ u_lower = -30;
 u_upper = 30;
 
 % Visualize x_j and u_j vs x and u from the data
-% visualize_pws(x_j, x{1,traj_n}, Dt, N);
-% visualize_pws(u_j, u{1,traj_n}, Dt, N);
+visualize_pws(x_j, x{1,traj_n}, Dt, N, 'x');
+visualize_pws(u_j, u{1,traj_n}, Dt, N, 'u');
 
-disp('Start of results using direct collocation without pws');
+disp('Start of results using direct collocation without PWS');
 %% Comparison of speed of direct collocation without initial x and u
 z_sol_without_pws = direct_collocation_main(...
     x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx);
 
 disp('--------------------------------------------------');
-disp('Start of results using direct collocation with pws');
+disp('Start of results using direct collocation with PWS');
 %% Comparison of speed of direct collocation with initial x and u
 z_sol_pws = direct_collocation_main(...
     x0, xf, nu, N, Dt, @dynamics_cartpole, u_lower, u_upper, 1:nx, x_j, u_j);

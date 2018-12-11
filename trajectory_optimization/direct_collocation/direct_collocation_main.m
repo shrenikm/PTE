@@ -39,11 +39,6 @@ function [z_sol] = direct_collocation_main(...
 
     z0 = zeros(size(z));
        
-%     z init value (interpolated)
-%     x_0_inds = 1:nx;
-%     x_f_inds = x_0_inds + (N - 1) * (nx + nu);
-    
-
     if ~init_flag %% No initial condition for x and u provided
         difference = (xf - x0)/(N-1);
         for i=1:N
@@ -90,10 +85,5 @@ function [z_sol] = direct_collocation_main(...
     disp('Solving');
 
     z_sol = fmincon(problem);
-
     
-
-    
-      
-
 end

@@ -22,8 +22,13 @@ load(strcat(filepath, filename));
 nx = size(x{1}, 1);
 nu = size(u{1}, 1);
 
-% Specify trajectory to be visualized
-traj_n = 1;
+% Flag to vary initial and goal positions for system.
+%  If flag is set, random initial and final positions will be assigned,
+%  else they will be extraced from trajectory data.
+random_flag = 0;
+
+% Specify trajectory to be visualized. Can be varied from 1:50.
+traj_n = 11;
 
 % Initialize number of knot points
 N = size(x{1}, 2);
@@ -91,13 +96,10 @@ eta = [];
 % Reshaping u_j
 u_j = reshape(u_j,  nu, N);
 
-
-% Initial and final states from data
-x0 = x{1,traj_n}(:,1);
-xf = x{1,traj_n}(:,N);
-
+%% Specify initial and final states based on random_flag
+if random_flag
 % Initial and final states assigned randomly
-x0 =    [lrandom(5, 25);...
+    x0 = [lrandom(5, 25);...
         lrandom(5, 25);...
         lrandom(5, 25);...
         lrandom(-pi/6, pi/6);...
@@ -109,10 +111,13 @@ x0 =    [lrandom(5, 25);...
         lrandom(-0.05,0.05);...
         lrandom(-0.05,0.05);...
         lrandom(-0.05,0.05)];
-
-xf = x0;
-xf(4:12) = zeros(9,1);
-
+    xf = x0;
+    xf(4:12) = zeros(9,1);
+else
+    % Initial and final states from data
+    x0 = x{1,traj_n}(:,1);
+    xf = x{1,traj_n}(:,N);
+end
 
 % Other parameters for direct_collocation
 Dt = T/N;
@@ -120,8 +125,8 @@ u_lower = -30;
 u_upper = 30;
 
 % Visualize x_j and u_j vs x and u from the data
-% visualize_pws(x_j, x{1,traj_n}, Dt, N);
-% visualize_pws(u_j, u{1,traj_n}, Dt, N);
+visualize_pws(x_j, x{1,traj_n}, Dt, N, 'x');
+visualize_pws(u_j, u{1,traj_n}, Dt, N, 'u');
 
 disp('Start of results using direct collocation without pws');
 %% Comparison of speed of direct collocation without initial x and u
@@ -133,4 +138,3 @@ disp('Start of results using direct collocation with pws');
 %% Comparison of speed of direct collocation without initial x and u
 z_sol_pws = direct_collocation_main(...
     x0, xf, nu, N, Dt, @dynamics_quadrotor, u_lower, u_upper, 1:nx, x_j, u_j);
-
